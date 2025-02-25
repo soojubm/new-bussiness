@@ -16,14 +16,16 @@ class CustomFilledButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton(
       onPressed: onPressed,
-      style: _buttonStyle(),
+      style: _buttonStyle(context),
       child: Text(text),
     );
   }
 
-  ButtonStyle _buttonStyle() {
+  ButtonStyle _buttonStyle(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
+
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(Colors.blue),
+      backgroundColor: MaterialStateProperty.all(primaryColor),
       minimumSize: MaterialStateProperty.all(Size(120.0, 48.0)),
       textStyle: MaterialStateProperty.all(
         TextStyle(
