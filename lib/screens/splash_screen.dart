@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // 일정 시간 후 HomeScreen으로 이동
   _navigateToHome() async {
-    await Future.delayed(Duration(seconds: 3)); // 3초 후
+    await Future.delayed(Duration(seconds: 1)); // 3초 후
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

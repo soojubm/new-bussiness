@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/custom_bottom_nav_bar.dart';
 
 // class HomeScreen extends StatelessWidget {
 //   @override
@@ -126,7 +127,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       body: <Widget>[
-        /// Home page
         Card(
           shadowColor: Colors.transparent,
           margin: const EdgeInsets.all(8.0),
@@ -247,54 +247,15 @@ class _HomeScreenState extends State<HomeScreen> {
       //       ],
       //     ),
       //   ),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: CustomBottomNavBar(
+        currentPageIndex: currentPageIndex,
         onDestinationSelected: (int index) {
           setState(() {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home),
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            icon: Badge(child: Icon(Icons.notifications_sharp)),
-            label: 'Notifications',
-          ),
-          NavigationDestination(
-            icon: Badge(
-              label: Text('2'),
-              child: Icon(Icons.messenger_sharp),
-            ),
-            label: 'Messages',
-          ),
-          NavigationDestination(
-            icon: Badge(
-              child: Icon(Icons.person),
-            ),
-            label: '프로필',
-          ),
-        ],
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   items: const <BottomNavigationBarItem>[
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.home),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.business),
-      //       label: 'Business',
-      //     ),
-      //   ],
-      //   currentIndex: _selectedIndex,
-      //   // selectedItemColor: Colors.amber[800],
-      //   onTap: _onItemTapped,
-      // ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
