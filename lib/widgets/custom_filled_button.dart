@@ -25,7 +25,7 @@ class CustomFilledButton extends StatelessWidget {
     final primaryColor = Theme.of(context).primaryColor;
 
     return ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(primaryColor),
+      // backgroundColor: MaterialStateProperty.all(primaryColor),
       minimumSize: MaterialStateProperty.all(Size(120.0, 48.0)),
       textStyle: MaterialStateProperty.all(
         TextStyle(

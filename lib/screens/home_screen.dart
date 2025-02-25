@@ -12,7 +12,8 @@ import 'package:flutter_application_1/widgets/custom_bottom_nav_bar.dart';
 // }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
+  // const HomeScreen({super.key, required this.title});
+  const HomeScreen({super.key, this.title = "home screen"});
 
   final String title;
 
@@ -45,7 +46,17 @@ class _HomeScreenState extends State<HomeScreen> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        // leading: Padding(
+        //   padding: const EdgeInsets.all(8.0),
+        //   child: Image.asset('assets/logo.png'), // 로고 이미지 (로컬 파일)
+        // ),
+        title: Row(
+          children: [
+            Image.asset('assets/logo.png', height: 40),
+            SizedBox(width: 10),
+            Text(widget.title),
+          ],
+        ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: <Widget>[
           IconButton(
@@ -201,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
 
         // 프로필
-        const Padding(
+        Padding(
             padding: EdgeInsets.all(16.0),
             child: Center(
               child: Column(
@@ -218,7 +229,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                       fontSize: 22,
                     ),
-                  )
+                  ),
+                  Image.asset('images/food.png'),
                 ],
               ),
             )),

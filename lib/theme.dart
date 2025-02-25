@@ -25,15 +25,14 @@ ThemeData lightTheme = ThemeData(
 
 ThemeData darkTheme = ThemeData(
   colorScheme: ColorScheme.dark(
-    // 다크 모드 색상
     primary: Colors.blueGrey,
     secondary: Colors.amber,
-    background: Colors.black,
+    // background: Colors.black,
     surface: Colors.grey[800]!,
     error: Colors.redAccent,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
-    onBackground: Colors.white,
+    // onBackground: Colors.white,
     onSurface: Colors.white,
     onError: Colors.white,
   ),

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_filled_button.dart';
 
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -74,9 +77,78 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: '로그인',
                   onPressed: _login,
                 ),
+                // Button to navigate to the NativePluginWidget page
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NativePluginWidget()),
+                    );
+                  },
+                  child: Text('Open Image Picker'),
+                ),
               ],
             ),
           )),
+    );
+  }
+}
+
+class NativePluginWidget extends StatefulWidget {
+  const NativePluginWidget({super.key});
+
+  @override
+  State<NativePluginWidget> createState() => _NativePluginWidgetState();
+}
+
+class _NativePluginWidgetState extends State<NativePluginWidget> {
+  XFile? _image;
+
+  Future getGalleryImage() async {
+    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  Future getCameraImage() async {
+    var image = await ImagePicker().pickImage(source: ImageSource.camera);
+    setState(() {
+      _image = image;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Image Picker'),
+      ),
+      body: Container(
+        color: Colors.indigo,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: (<Widget>[
+              ElevatedButton(
+                  onPressed: getGalleryImage, child: Text('gallery')),
+              Center(
+                child: _image == null
+                    ? Text(
+                        'No image selected',
+                        style: TextStyle(color: Colors.white),
+                      )
+                    : CircleAvatar(
+                        backgroundImage: FileImage(File(_image!.path)),
+                        radius: 100,
+                      ),
+              ),
+              ElevatedButton(onPressed: getCameraImage, child: Text('camera')),
+            ]),
+          ),
+        ),
+      ),
     );
   }
 }
