@@ -94,18 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.message),
-              title: const Text('Messages'),
-              onTap: () {
-                setState(() {
-                  selectedPage = 'Messages';
-                });
-              },
-            ),
-            ListTile(
               leading: const Icon(Icons.account_circle),
-              title: const Text('Profile'),
+              title: const Text('로그인 샘플러'),
               onTap: () {
+                Navigator.pushNamed(context, '/login');
                 setState(() {
                   selectedPage = 'Profile';
                 });

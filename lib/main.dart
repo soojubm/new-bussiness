@@ -29,6 +29,9 @@ class MyApp extends StatelessWidget {
         '/about': (BuildContext context) {
           return Scaffold(appBar: AppBar(title: const Text('About Route')));
         },
+        '/login': (BuildContext context) {
+          return LoginScreen();
+        },
         // '/': (context) => LoginScreen(), // 로그인 페이지
       },
       home: SplashScreen(),
