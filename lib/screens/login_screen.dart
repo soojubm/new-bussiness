@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_filled_button.dart';
+import 'package:flutter_application_1/widgets/custom_icon_button.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -77,6 +78,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: '로그인',
                   onPressed: _login,
                 ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  CustomIconButton(
+                      icon: Icons.volume_up,
+                      tooltip: "아이콘 버튼 스몰",
+                      onPressed: () {
+                        print('아이콘 버튼이 눌렸습니다!');
+                      },
+                      size: ButtonSize.small),
+                  CustomIconButton(
+                      icon: Icons.volume_up,
+                      tooltip: "아이콘 버튼 미디엄",
+                      onPressed: () {
+                        print('아이콘 버튼이 눌렸습니다!');
+                      }),
+                ]),
                 // Button to navigate to the NativePluginWidget page
                 ElevatedButton(
                   onPressed: () {
