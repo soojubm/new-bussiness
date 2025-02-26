@@ -18,9 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   void _login() {
-    // Form 검증
     if (_formKey.currentState?.validate() ?? false) {
-      // 검증이 성공하면 홈 페이지로 이동
       Navigator.pushNamed(context, '/home');
     } else {
       // 검증 실패 시 알림
@@ -44,69 +42,71 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: Text('Login Page'),
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(gridMargin),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextFormField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    labelText: 'Username',
-                    border: OutlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Padding(
+            padding: const EdgeInsets.all(gridMargin),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      border: OutlineInputBorder(),
+                    ),
+                    autofocus: true,
+                    onChanged: (text) {
+                      print(
+                          'First text field: $text (${text.characters.length})');
+                    },
+                    validator: (value) => commonValidator(value, 'username'),
                   ),
-                  autofocus: true,
-                  onChanged: (text) {
-                    print(
-                        'First text field: $text (${text.characters.length})');
-                  },
-                  validator: (value) => commonValidator(value, 'username'),
-                ),
-                SizedBox(height: 20),
-                TextFormField(
-                  obscureText: true, // 비밀번호 입력 시 텍스트 숨기기
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    obscureText: true, // 비밀번호 입력 시 텍스트 숨기기
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) => commonValidator(value, 'password'),
                   ),
-                  validator: (value) => commonValidator(value, 'password'),
-                ),
-                SizedBox(height: 20),
-                CustomFilledButton(
-                  text: '로그인',
-                  onPressed: _login,
-                ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  CustomIconButton(
-                      icon: Icons.volume_up,
-                      tooltip: "아이콘 버튼 스몰",
-                      onPressed: () {
-                        print('아이콘 버튼이 눌렸습니다!');
-                      },
-                      size: ButtonSize.small),
-                  CustomIconButton(
-                      icon: Icons.volume_up,
-                      tooltip: "아이콘 버튼 미디엄",
-                      onPressed: () {
-                        print('아이콘 버튼이 눌렸습니다!');
-                      }),
-                ]),
-                // Button to navigate to the NativePluginWidget page
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NativePluginWidget()),
-                    );
-                  },
-                  child: Text('Open Image Picker'),
-                ),
-              ],
-            ),
-          )),
+                  SizedBox(height: 20),
+                  CustomFilledButton(
+                    text: '로그인',
+                    onPressed: _login,
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    CustomIconButton(
+                        icon: Icons.volume_up,
+                        tooltip: "아이콘 버튼 스몰",
+                        onPressed: () {
+                          print('아이콘 버튼이 눌렸습니다!');
+                        },
+                        size: ButtonSize.small),
+                    CustomIconButton(
+                        icon: Icons.volume_up,
+                        tooltip: "아이콘 버튼 미디엄",
+                        onPressed: () {
+                          print('아이콘 버튼이 눌렸습니다!');
+                        }),
+                  ]),
+                  // Button to navigate to the NativePluginWidget page
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NativePluginWidget()),
+                      );
+                    },
+                    child: Text('Open Image Picker'),
+                  ),
+                ],
+              ),
+            )),
+      ),
     );
   }
 }
