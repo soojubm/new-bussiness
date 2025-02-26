@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_filled_button.dart';
 import 'package:flutter_application_1/widgets/custom_icon_button.dart';
+import 'package:flutter_application_1/widgets/custom_text_field.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -50,29 +51,26 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextFormField(
+                  CustomTextField(
                     controller: _controller,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      border: OutlineInputBorder(),
-                    ),
-                    autofocus: true,
+                    labelText: 'Username',
+                    hintText: 'Enter your email',
+                    icon: Icons.email,
                     onChanged: (text) {
-                      print(
-                          'First text field: $text (${text.characters.length})');
+                      print('Entered text: $text');
                     },
                     validator: (value) => commonValidator(value, 'username'),
                   ),
-                  SizedBox(height: 20),
-                  TextFormField(
-                    obscureText: true, // 비밀번호 입력 시 텍스트 숨기기
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
+                  // SizedBox 말고 TextFieldGroup
+                  CustomTextField(
+                    controller: _controller,
+                    labelText: 'Password',
+                    hintText: 'Enter your email',
+                    onChanged: (text) {
+                      print('Entered text: $text');
+                    },
                     validator: (value) => commonValidator(value, 'password'),
                   ),
-                  SizedBox(height: 20),
                   CustomFilledButton(
                     text: '로그인',
                     onPressed: _login,
