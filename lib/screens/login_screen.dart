@@ -3,6 +3,7 @@ import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_filled_button.dart';
 import 'package:flutter_application_1/widgets/custom_icon_button.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
+import 'package:flutter_application_1/widgets/custom_checkbox.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +14,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // 텍스트 필드에서 입력된 값을 저장할 변수
   TextEditingController _controller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -35,6 +35,15 @@ class _LoginScreenState extends State<LoginScreen> {
       return 'Please enter a $fieldName';
     }
     return null;
+  }
+
+  // 체크박스 상태
+  bool _isChecked = false;
+
+  void _handleCheckboxChange(bool value) {
+    setState(() {
+      _isChecked = value;
+    });
   }
 
   @override
@@ -90,6 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           print('아이콘 버튼이 눌렸습니다!');
                         }),
                   ]),
+                  CustomCheckbox(
+                    value: _isChecked,
+                    onChanged: _handleCheckboxChange,
+                  ),
                   // Button to navigate to the NativePluginWidget page
                   ElevatedButton(
                     onPressed: () {
