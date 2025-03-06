@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "349858250623",
+    "project_id": "insplanet-app",
+    "storage_bucket": "insplanet-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349858250623:android:31aca4501ea7a69178e44a",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjZ8h9VtfL7IcUIM6LL0U924NU-eoIiz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

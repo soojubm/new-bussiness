@@ -17,13 +17,17 @@ class CustomButtonGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
+      textDirection: TextDirection.rtl,
+      spacing: 8,
       children: [
         CustomButton(
+          variant: 'filled',
           text: firstButtonText,
           onPressed: onFirstButtonPressed,
         ),
         CustomButton(
+          variant: 'secondary',
           text: secondButtonText,
           onPressed: onSecondButtonPressed,
         ),

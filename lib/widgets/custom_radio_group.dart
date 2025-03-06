@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/custom_radio.dart';
 
 class CustomRadioGroup extends StatelessWidget {
-  final List<String> options; // 라디오 버튼의 옵션들
-  final int selectedValue; // 선택된 값의 인덱스
-  final ValueChanged<int> onChanged; // 라디오 버튼 클릭 시 호출되는 콜백
+  final List<String> options;
+  final int selectedValue;
+  final ValueChanged<int> onChanged;
 
   CustomRadioGroup({
     required this.options,
@@ -19,20 +19,20 @@ class CustomRadioGroup extends StatelessWidget {
         options.length,
         (index) => GestureDetector(
           onTap: () {
-            onChanged(index); // 라디오 버튼 클릭 시 선택된 인덱스 전달
+            onChanged(index);
           },
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomRadio(
-                value: selectedValue == index, // 선택된 인덱스와 비교
+                value: selectedValue == index,
                 onChanged: (_) {
-                  onChanged(index); // 라디오 버튼 클릭 시 선택된 인덱스 전달
+                  onChanged(index);
                 },
               ),
               SizedBox(width: 10),
               Text(
-                options[index], // 옵션 이름
+                options[index],
                 style: TextStyle(fontSize: 18),
               ),
             ],

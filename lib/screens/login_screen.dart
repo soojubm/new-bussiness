@@ -179,16 +179,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ]),
 
                   // 왜 안 됨
-                  // CustomButtonGroup(
-                  //   firstButtonText: '로그인',
-                  //   secondButtonText: '회원가입',
-                  //   onFirstButtonPressed: () {
-                  //     print('로그인 버튼 클릭됨');
-                  //   },
-                  //   onSecondButtonPressed: () {
-                  //     print('회원가입 버튼 클릭됨');
-                  //   },
-                  // ),
+                  CustomButtonGroup(
+                    firstButtonText: '확인',
+                    secondButtonText: '취소',
+                    onFirstButtonPressed: () {
+                      print('확인');
+                    },
+                    onSecondButtonPressed: () {
+                      print('취소');
+                    },
+                  ),
 
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     CustomIconButton(
