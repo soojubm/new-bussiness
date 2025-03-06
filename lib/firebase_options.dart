@@ -64,6 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '349858250623',
     projectId: 'insplanet-app',
     storageBucket: 'insplanet-app.firebasestorage.app',
+    iosClientId:
+        '349858250623-ta57ucb92u6nklarvua4c9ho89rqrb3a.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 
@@ -73,6 +75,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '349858250623',
     projectId: 'insplanet-app',
     storageBucket: 'insplanet-app.firebasestorage.app',
+    iosClientId:
+        '349858250623-ta57ucb92u6nklarvua4c9ho89rqrb3a.apps.googleusercontent.com',
     iosBundleId: 'com.example.flutterApplication1',
   );
 

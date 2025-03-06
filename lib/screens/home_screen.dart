@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/custom_bottom_nav_bar.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 // class HomeScreen extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -22,6 +24,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  // Firestore에서 데이터를 가져오는 메서드
+  Future<List<Map<String, dynamic>>> getData() async {
+    try {
+      // 'users' 컬렉션에서 데이터 가져오기
+      QuerySnapshot querySnapshot = await db.collection('product').get();
+
+      // 각 문서에서 데이터를 가져오기
+      List<Map<String, dynamic>> usersList = [];
+      for (var doc in querySnapshot.docs) {
+        usersList.add(doc.data() as Map<String, dynamic>);
+      }
+      return usersList;
+    } catch (e) {
+      print('Error occurred: $e');
+      return [];
+    }
+  }
+
   int _counter = 0;
 
   String selectedPage = '';
@@ -115,6 +137,16 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.account_circle),
+              title: const Text('컴포넌트'),
+              onTap: () {
+                Navigator.pushNamed(context, '/components');
+                setState(() {
+                  selectedPage = 'Profile';
+                });
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Settings'),
               onTap: () {
@@ -130,18 +162,44 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       body: <Widget>[
-        Card(
-          shadowColor: Colors.transparent,
-          margin: const EdgeInsets.all(8.0),
-          child: SizedBox.expand(
-            child: Center(
-              child: Text(
-                'Home page',
-                style: theme.textTheme.titleLarge,
-              ),
-            ),
-          ),
+        FutureBuilder<List<Map<String, dynamic>>>(
+          future: getData(), // 데이터를 가져오는 메서드 호출
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text("Error: ${snapshot.error}"));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(child: Text("No data found"));
+            } else {
+              // 데이터를 가져오고 화면에 표시
+              List<Map<String, dynamic>> users = snapshot.data!;
+              return ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  var user = users[index];
+                  return ListTile(
+                    title: Text(user['price'].toString() ?? 'No name'),
+                    subtitle: Text('createdAt: ${user['createdAt']}'),
+                  );
+                },
+              );
+            }
+          },
         ),
+
+        // Card(
+        //   shadowColor: Colors.transparent,
+        //   margin: const EdgeInsets.all(8.0),
+        //   child: SizedBox.expand(
+        //     child: Center(
+        //       child: Text(
+        //         'Home page',
+        //         style: theme.textTheme.titleLarge,
+        //       ),
+        //     ),
+        //   ),
+        // ),
 
         /// Notifications page
         const Padding(
