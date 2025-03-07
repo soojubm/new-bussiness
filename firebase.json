@@ -1,1 +1,66 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"insplanet-app","appId":"1:349858250623:android:31aca4501ea7a69178e44a","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"insplanet-app","configurations":{"android":"1:349858250623:android:31aca4501ea7a69178e44a","ios":"1:349858250623:ios:c576fd193c52cde278e44a","macos":"1:349858250623:ios:c576fd193c52cde278e44a","web":"1:349858250623:web:7ab2d06367a9382378e44a","windows":"1:349858250623:web:4c66e475e897255878e44a"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "insplanet-app",
+          "appId": "1:349858250623:android:31aca4501ea7a69178e44a",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "insplanet-app",
+          "configurations": {
+            "android": "1:349858250623:android:31aca4501ea7a69178e44a",
+            "ios": "1:349858250623:ios:c576fd193c52cde278e44a",
+            "macos": "1:349858250623:ios:c576fd193c52cde278e44a",
+            "web": "1:349858250623:web:7ab2d06367a9382378e44a",
+            "windows": "1:349858250623:web:4c66e475e897255878e44a"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "apphosting": {
+      "port": 5002,
+      "rootDirectory": "./"
+    },
+    "auth": {
+      "port": 9099
+    },
+    "functions": {
+      "port": 5001
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "database": {
+      "port": 9000
+    },
+    "hosting": {
+      "port": 5000
+    },
+    "pubsub": {
+      "port": 8085
+    },
+    "storage": {
+      "port": 9199
+    },
+    "eventarc": {
+      "port": 9299
+    },
+    "dataconnect": {
+      "port": 9399,
+      "dataDir": "dataconnect/.dataconnect/pgliteData"
+    },
+    "tasks": {
+      "port": 9499
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}

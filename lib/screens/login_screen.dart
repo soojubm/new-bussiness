@@ -1,20 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
-import 'package:flutter_application_1/widgets/custom_button_group.dart';
-import 'package:flutter_application_1/widgets/custom_choice_chip_group.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
-import 'package:flutter_application_1/widgets/custom_filter_chip_group.dart';
-import 'package:flutter_application_1/widgets/custom_icon_button.dart';
-import 'package:flutter_application_1/widgets/custom_input_chip_group.dart';
-import 'package:flutter_application_1/widgets/custom_modal_bottom_sheet.dart';
-import 'package:flutter_application_1/widgets/custom_radio.dart';
-import 'package:flutter_application_1/widgets/custom_radio_group.dart';
-import 'package:flutter_application_1/widgets/custom_switch.dart';
-import 'package:flutter_application_1/widgets/custom_text.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
-import 'package:flutter_application_1/widgets/custom_checkbox.dart';
-import 'package:flutter_application_1/widgets/custom_chip.dart';
-import 'package:flutter_application_1/widgets/custom_input_chip.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -27,18 +16,121 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _controller = TextEditingController();
 
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  String errorMessage = '';
+
   final _formKey = GlobalKey<FormState>();
 
-  void _login() {
+  void _login() async {
+    String username = _usernameController.text;
+    String password = _passwordController.text;
+
     if (_formKey.currentState?.validate() ?? false) {
-      Navigator.pushNamed(context, '/home');
+      try {
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: username, password: password);
+
+        // Navigator.pushNamed(context, '/');
+
+        // currentUser가 null이 될 수 있는 이유는 2가지입니다.
+        // 사용자가 로그인하지 않았습니다.
+        // 인증 객체의 초기화가 완료되지 않았습니다. 리스너를 사용해 사용자의 로그인 상태를 추적하면 이러한 상황을 처리할 필요가 없습니다.
+        FirebaseAuth.instance.authStateChanges().listen((User? user) {
+          if (user != null) {
+            print(user.uid);
+          }
+        });
+        // Navigator.pushReplacementNamed(context, '/')
+      } on FirebaseAuthException catch (e) {
+        // print("Error code: ${e.code} ${e.message}");
+        // 오류 처리
+
+        String newErrorMessage = '';
+        if (e.code == 'invalid-email') {
+          newErrorMessage = '이메일 양식이 아닙니다.';
+        } else {
+          newErrorMessage = '이메일 또는 비밀번호가 잘못 되었습니다.';
+        }
+
+        setState(() {
+          errorMessage = newErrorMessage; // 오류 메시지 상태 업데이트
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage)),
+        );
+      } catch (e) {
+        // 일반적인 오류 처리
+        print("General error: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Something went wrong. Please try again later.')),
+        );
+      }
     } else {
-      // 검증 실패 시 알림
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Please fill in all fields correctly.')),
       );
     }
   }
+
+  Future<void> _register() async {
+    String username = _usernameController.text;
+    String password = _passwordController.text;
+
+    try {
+      final userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: username,
+        password: password,
+      );
+
+      User? user = userCredential.user;
+
+      // Firestore에 사용자 정보를 저장
+      if (user != null) {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'email': user.email,
+          'username': username,
+          'uid': user.uid,
+          'profilePicture': '',
+          'createdAt': FieldValue.serverTimestamp(),
+        });
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('가입완료링')),
+      );
+    } on FirebaseAuthException catch (e) {
+      String feedbackMessage = '';
+
+      if (e.code == 'weak-password') {
+        feedbackMessage = '비밀번호 6자 이상부탁';
+      } else if (e.code == 'email-already-in-use') {
+        feedbackMessage = '이미 가입된 이메일이빈다요';
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(feedbackMessage)),
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // void _login() {
+  //   String username = _controller.text; // TextField의 값 읽기
+  //   print('Entered username: $username');
+
+  //   if (_formKey.currentState?.validate() ?? false) {
+  //     Navigator.pushNamed(context, '/home');
+  //   } else {
+  //     // 검증 실패 시 알림
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Please fill in all fields correctly.')),
+  //     );
+  //   }
+  // }
 
   // 공통 입력값 검증 함수
   String? commonValidator(String? value, String fieldName) {
@@ -46,74 +138,6 @@ class _LoginScreenState extends State<LoginScreen> {
       return 'Please enter a $fieldName';
     }
     return null;
-  }
-
-  // 체크박스
-  bool _isChecked = false;
-
-  void _handleCheckboxChange(bool value) {
-    setState(() {
-      _isChecked = value;
-    });
-  }
-
-  // 스위치
-  bool _isSwitched = false;
-
-  void _toggleSwitch(bool value) {
-    setState(() {
-      _isSwitched = value;
-    });
-  }
-
-  // 라디오
-  int? _selectedValue;
-
-  void _handleRadioValueChanged(int? value) {
-    setState(() {
-      _selectedValue = value;
-    });
-  }
-
-  // 라디오 그룹룹
-  int _selectedIndex = 0;
-
-  void _handleRadioValueChanged1(int value) {
-    setState(() {
-      _selectedIndex = value;
-    });
-  }
-
-  // 칩
-  // 선택된 인덱스를 MyApp에서 관리
-  int _selectedIndex1 = 1;
-
-  final List<String> _chipLabels = [
-    'ChoiceChip 1',
-    'ChoiceChip 2',
-    'ChoiceChip 3',
-    'ChoiceChip 4',
-  ];
-
-  // filterChips
-  List<String> selectedFilters = ['FilterChip 1'];
-
-  void onSelectionChanged(List<String> selectedFilters) {
-    setState(() {
-      this.selectedFilters = selectedFilters;
-    });
-  }
-
-  List<String> inputChips = [
-    'InputChip 1',
-    'InputChip 2',
-    'InputChip 3',
-    'InputChip 4'
-  ];
-  void handleChipDeleted(String filter) {
-    setState(() {
-      inputChips.remove(filter); // 선택된 필터를 리스트에서 제거
-    });
   }
 
   @override
@@ -131,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomTextField(
-                    controller: _controller,
+                    controller: _usernameController,
                     labelText: 'Username',
                     hintText: 'Enter your email',
                     icon: Icons.email,
@@ -142,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   // SizedBox 말고 TextFieldGroup
                   CustomTextField(
-                    controller: _controller,
+                    controller: _passwordController,
                     labelText: 'Password',
                     hintText: 'Enter your email',
                     onChanged: (text) {
@@ -151,20 +175,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) => commonValidator(value, 'password'),
                   ),
 
-                  CustomText(
-                      variant: 'title',
-                      text: 'Title 텍스트',
-                      color: Colors.indigo),
-                  CustomText(variant: 'body', text: 'body 텍스트'),
-                  CustomText(variant: 'label', text: 'label 텍스트'),
+                  if (errorMessage.isNotEmpty)
+                    Text(
+                      errorMessage,
+                      style: TextStyle(color: Colors.red),
+                    ),
 
                   Column(spacing: 4.0, children: [
-                    CustomButton(
-                      variant: 'fille',
-                      size: 'small',
-                      text: '로그인',
-                      onPressed: _login,
-                    ),
                     CustomButton(
                       variant: 'secondary',
                       size: 'small',
@@ -172,166 +189,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: _login,
                     ),
                     CustomButton(
-                      variant: 'fille',
-                      text: '로그인',
-                      onPressed: _login,
+                      variant: 'secondary',
+                      size: 'small',
+                      text: '회원가입',
+                      onPressed: _register,
                     ),
                   ]),
 
-                  // 왜 안 됨
-                  CustomButtonGroup(
-                    firstButtonText: '확인',
-                    secondButtonText: '취소',
-                    onFirstButtonPressed: () {
-                      print('확인');
-                    },
-                    onSecondButtonPressed: () {
-                      print('취소');
-                    },
-                  ),
-
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    CustomIconButton(
-                        icon: Icons.volume_up,
-                        tooltip: "아이콘 버튼 스몰",
-                        onPressed: () {
-                          print('아이콘 버튼이 눌렸습니다!');
-                        },
-                        size: ButtonSize.small),
-                    CustomIconButton(
-                        icon: Icons.volume_up,
-                        tooltip: "아이콘 버튼 미디엄",
-                        onPressed: () {
-                          print('아이콘 버튼이 눌렸습니다!');
-                        }),
-                  ]),
-                  CustomCheckbox(
-                    value: _isChecked,
-                    onChanged: _handleCheckboxChange,
-                  ),
-
-                  // CustomRadio(
-                  //   value: _selectedValue == 0,
-                  //   onChanged: (bool newValue) {
-                  //     _handleRadioValueChanged(newValue ? 0 : null);
-                  //   },
-                  // ),
-                  // SizedBox(height: 10),
-                  // CustomRadio(
-                  //   value: _selectedValue == 1,
-                  //   onChanged: (bool newValue) {
-                  //     _handleRadioValueChanged(newValue ? 1 : null);
-                  //   },
-                  // ),
-
-                  CustomRadioGroup(
-                    options: ['Option 1', 'Option 2', 'Option 3'], // 라디오 버튼 옵션
-                    selectedValue: _selectedIndex, // 선택된 인덱스
-                    onChanged: _handleRadioValueChanged1, // 라디오 버튼 선택 시 호출되는 콜백
-                  ),
-
-                  CustomChip(label: "커스텀 칩이다 이놈아 에라이 이놈어ㅏ"),
-                  CustomInputChip(label: "InputChip"),
-
-                  CustomInputChipGroup(
-                    filters: inputChips,
-                    onDeleted: handleChipDeleted,
-                    // selectedFilters: selectedFilters,
-                    // onSelectionChanged: onSelectionChanged,
-                  ),
-
-                  CustomChoiceChipGroup(
-                    selectedIndex: _selectedIndex1, // MyApp에서 관리되는 상태 전달
-                    chipLabels: _chipLabels,
-                    onSelectionChanged: (int index) {
-                      setState(() {
-                        _selectedIndex1 = index; // 상태를 MyApp에서 업데이트
-                      });
-                    },
-                  ),
-
-                  CustomFilterChipGroup(
-                    filters: [
-                      'FilterChip 1',
-                      'FilterChip 2',
-                      'FilterChip 3',
-                      'FilterChip 4'
-                    ],
-                    selectedFilters: selectedFilters,
-                    onSelectionChanged: onSelectionChanged,
-                  ),
-
-                  CustomSwitch(
-                    value: _isSwitched,
-                    onChanged: _toggleSwitch,
-                  ),
-                  // Button to navigate to the NativePluginWidget page
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NativePluginWidget()),
-                      );
-                    },
-                    child: Text('Open Image Picker'),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  // dialog
-                  ElevatedButton(
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => Dialog(
-                        child: Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              CustomText(
-                                  variant: 'body',
-                                  text: 'This is a typical dialog.'),
-                              const SizedBox(height: 4),
-                              const Text('This is a typical dialog.'),
-                              const SizedBox(height: 15),
-                              // buttonGroup
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Close'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    child: const Text('Show Dialog'),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  // bottom sheet
-                  ElevatedButton(
-                    child: Text('showModalBottomSheet'),
-                    onPressed: () {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CustomModalBottomSheet(
-                            title: 'Modal BottomSheet',
-                            child: ElevatedButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('Close BottomSheet'),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  )
+                  Text(_controller.text),
                 ],
               ),
             )),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/screens/components_screen.dart';
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
 
-      initialRoute: '/components',
+      initialRoute:
+          FirebaseAuth.instance.currentUser != null ? '/components' : '/login',
       routes: <String, WidgetBuilder>{
         // '/': (BuildContext context) {
         //   return Scaffold(appBar: AppBar(title: const Text('Home Route')));

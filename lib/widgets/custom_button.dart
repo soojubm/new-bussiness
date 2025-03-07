@@ -31,7 +31,7 @@ class CustomButton extends StatelessWidget {
       case 'filled':
         return Colors.blue;
       case 'secondary':
-        return Colors.transparent;
+        return Colors.black;
       default:
         return Colors.blue;
     }
@@ -42,7 +42,7 @@ class CustomButton extends StatelessWidget {
       case 'filled':
         return Colors.transparent;
       case 'secondary':
-        return Colors.black;
+        return Colors.transparent;
       default:
         return Colors.transparent;
     }
@@ -60,6 +60,7 @@ class CustomButton extends StatelessWidget {
       ),
       padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
       fillColor: _getButtonBackgroundColor(),
+      elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         side: BorderSide(color: _getBorderColor(), width: 1),
