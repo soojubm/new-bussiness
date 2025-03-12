@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
+import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
 import 'package:flutter_application_1/widgets/custom_button_group.dart';
 import 'package:flutter_application_1/widgets/custom_choice_chip_group.dart';
@@ -16,13 +17,15 @@ import 'package:flutter_application_1/widgets/custom_text_field.dart';
 import 'package:flutter_application_1/widgets/custom_checkbox.dart';
 import 'package:flutter_application_1/widgets/custom_chip.dart';
 import 'package:flutter_application_1/widgets/custom_input_chip.dart';
+import 'package:flutter_application_1/widgets/result.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ComponentsScreen extends StatefulWidget {
+class ComponentsScreen extends ConsumerStatefulWidget {
   @override
   _ComponentsScreenState createState() => _ComponentsScreenState();
 }
 
-class _ComponentsScreenState extends State<ComponentsScreen> {
+class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
   TextEditingController _controller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -116,6 +119,9 @@ class _ComponentsScreenState extends State<ComponentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // 글로벌 상태
+    final globalCounter = ref.watch(counterProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login Page'),
@@ -128,6 +134,28 @@ class _ComponentsScreenState extends State<ComponentsScreen> {
               child: Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    'Global Counter: $globalCounter',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          ref.read(counterProvider.notifier).state++;
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.remove),
+                        onPressed: () {
+                          ref.read(counterProvider.notifier).state--;
+                        },
+                      ),
+                    ],
+                  ),
+                  Result(title: '페이지가 없습니다.', description: '내용입니다'),
                   CustomText(
                       variant: 'title',
                       text: 'Title 텍스트',

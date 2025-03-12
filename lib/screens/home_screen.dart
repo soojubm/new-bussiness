@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/widgets/custom_bottom_nav_bar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 // class HomeScreen extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
+  int currentPageIndex = 0;
 
   // Firestore에서 데이터를 가져오는 메서드
   Future<List<Map<String, dynamic>>> getData() async {
@@ -61,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
   //     _selectedIndex = index;
   //   });
   // }
-  int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +132,16 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('로그인 샘플러'),
               onTap: () {
                 Navigator.pushNamed(context, '/login');
+                setState(() {
+                  selectedPage = 'Profile';
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.account_circle),
+              title: const Text('회원가입'),
+              onTap: () {
+                Navigator.pushNamed(context, '/signup');
                 setState(() {
                   selectedPage = 'Profile';
                 });

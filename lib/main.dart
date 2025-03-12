@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/screens/components_screen.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
+import 'package:flutter_application_1/screens/signup_screen.dart';
 import 'package:flutter_application_1/theme.dart';
 import 'screens/splash_screen.dart';
 import 'screens/settings_screen.dart';
@@ -10,9 +11,21 @@ import 'screens/settings_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// ProviderScope
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+// @riverpod
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+part 'main.g.dart';
+
 // guides
 // 1차에서는 tokenize 하지 않고 themeData에서 바로 사용해 본다.
 // colorScheme이이 MD3 방식.
+
+@riverpod
+String helloWorld(Ref ref) {
+  return 'Hello world';
+}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +33,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // Firebase 초기화
-  runApp(MyApp());
+
+  // riverpod
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 void getData() async {
@@ -35,11 +54,12 @@ void getData() async {
   }
 }
 
-class MyApp extends StatelessWidget {
+// riverpod ConsumerWidget
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: lightTheme,
@@ -58,6 +78,12 @@ class MyApp extends StatelessWidget {
         },
         '/login': (BuildContext context) {
           return LoginScreen();
+        },
+        '/signin': (BuildContext context) {
+          return LoginScreen();
+        },
+        '/signup': (BuildContext context) {
+          return SignUpScreen();
         },
         '/components': (BuildContext context) {
           return ComponentsScreen();
