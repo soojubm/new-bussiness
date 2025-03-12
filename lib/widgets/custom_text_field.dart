@@ -33,33 +33,30 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(16.0),
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        onChanged: onChanged,
-        validator: validator,
-        decoration: InputDecoration(
-          labelText: labelText,
-          hintText: hintText,
-          prefixIcon: icon != null ? Icon(icon) : null,
-          contentPadding: icon != null
-              ? EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0)
-              : EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-          border: OutlineInputBorder(
-            borderRadius: defaultBorderRadius,
-            borderSide: defaultBorderSide(context),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: defaultBorderRadius,
-            borderSide: defaultBorderSide(context),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: defaultBorderRadius,
-            borderSide: defaultBorderSide(context),
-          ),
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onChanged: onChanged,
+      validator: validator,
+      decoration: InputDecoration(
+        labelText: labelText,
+        hintText: hintText,
+        prefixIcon: icon != null ? Icon(icon) : null,
+        contentPadding: icon != null
+            ? EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0)
+            : EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        border: OutlineInputBorder(
+          borderRadius: defaultBorderRadius,
+          borderSide: defaultBorderSide(context),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: defaultBorderRadius,
+          borderSide: defaultBorderSide(context),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: defaultBorderRadius,
+          borderSide: defaultBorderSide(context),
         ),
       ),
     );

@@ -8,12 +8,14 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final String variant;
+  final bool isFullWidth;
 
   const CustomButton({
     this.size = 'medium',
     this.variant = 'filled',
     required this.text,
     required this.onPressed,
+    this.isFullWidth = false,
   });
 
   double _getButtonHeight() {
@@ -50,21 +52,24 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Text(text, style: TextStyle(fontSize: 14.0, color: Colors.white)),
-      onPressed: onPressed,
-      // style: _buttonStyle(context),
-      constraints: BoxConstraints(
-        minHeight: _getButtonHeight(),
-        maxHeight: _getButtonHeight(),
-      ),
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
-      fillColor: _getButtonBackgroundColor(),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        side: BorderSide(color: _getBorderColor(), width: 1),
-      ),
-    );
+    return Container(
+        width: isFullWidth ? double.infinity : null,
+        child: RawMaterialButton(
+          child:
+              Text(text, style: TextStyle(fontSize: 14.0, color: Colors.white)),
+          onPressed: onPressed,
+          // style: _buttonStyle(context),
+          constraints: BoxConstraints(
+            minHeight: _getButtonHeight(),
+            maxHeight: _getButtonHeight(),
+          ),
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
+          fillColor: _getButtonBackgroundColor(),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+            side: BorderSide(color: _getBorderColor(), width: 1),
+          ),
+        ));
   }
 }
