@@ -45,12 +45,6 @@ class CustomBottomNavBar extends StatelessWidget {
         NavigationDestination(
           icon: Badge(
             label: Text('2'),
-            child: Icon(Icons.messenger_sharp),
-          ),
-          label: 'Messages',
-        ),
-        NavigationDestination(
-          icon: Badge(
             child: Icon(Icons.person),
           ),
           label: '마이페이지',

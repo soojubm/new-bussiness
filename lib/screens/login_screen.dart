@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -32,20 +33,19 @@ class _LoginScreenState extends State<LoginScreen> {
             .signInWithEmailAndPassword(email: username, password: password);
 
         // Navigator.pushNamed(context, '/');
+        // Navigator.pushReplacementNamed(context, '/')
 
         // currentUser가 null이 될 수 있는 이유는 2가지입니다.
         // 사용자가 로그인하지 않았습니다.
-        // 인증 객체의 초기화가 완료되지 않았습니다. 리스너를 사용해 사용자의 로그인 상태를 추적하면 이러한 상황을 처리할 필요가 없습니다.
+        // 인증 객체의 초기화가 완료되지 않았습니다.
+        // 리스너를 사용해 사용자의 로그인 상태를 추적하면 이러한 상황을 처리할 필요가 없습니다.
         FirebaseAuth.instance.authStateChanges().listen((User? user) {
           if (user != null) {
             print(user.uid);
           }
         });
-        // Navigator.pushReplacementNamed(context, '/')
       } on FirebaseAuthException catch (e) {
-        // print("Error code: ${e.code} ${e.message}");
         // 오류 처리
-
         String newErrorMessage = '';
         if (e.code == 'invalid-email') {
           newErrorMessage = '이메일 양식이 아닙니다.';
@@ -54,11 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         setState(() {
-          errorMessage = newErrorMessage; // 오류 메시지 상태 업데이트
+          errorMessage = newErrorMessage;
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(errorMessage)),
-        );
       } catch (e) {
         // 일반적인 오류 처리
         print("General error: $e");
@@ -107,6 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (e.code == 'weak-password') {
         feedbackMessage = '비밀번호 6자 이상부탁';
       } else if (e.code == 'email-already-in-use') {
+        // 유저가 있으면?
         feedbackMessage = '이미 가입된 이메일이빈다요';
       }
 
@@ -118,19 +116,23 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  // void _login() {
-  //   String username = _controller.text; // TextField의 값 읽기
-  //   print('Entered username: $username');
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-  //   if (_formKey.currentState?.validate() ?? false) {
-  //     Navigator.pushNamed(context, '/home');
-  //   } else {
-  //     // 검증 실패 시 알림
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(content: Text('Please fill in all fields correctly.')),
-  //     );
-  //   }
-  // }
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
 
   // 공통 입력값 검증 함수
   String? commonValidator(String? value, String fieldName) {
@@ -144,63 +146,75 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Login Page'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(gridMargin),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomTextField(
-                    controller: _usernameController,
-                    labelText: 'Username',
-                    hintText: 'Enter your email',
-                    icon: Icons.email,
-                    onChanged: (text) {
-                      print('Entered text: $text');
-                    },
-                    validator: (value) => commonValidator(value, 'username'),
+          child: Align(
+        alignment: Alignment.center, // 가운데 정렬
+        child: Container(
+          alignment: Alignment.center,
+          constraints: BoxConstraints(
+            // minWidth: 100,
+            maxWidth: 380,
+            minHeight: 100,
+          ),
+          padding: const EdgeInsets.all(gridMargin),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              spacing: 12,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomButton(
+                  variant: 'secondary',
+                  text: '구굴로시작하긔',
+                  onPressed: signInWithGoogle,
+                  isFullWidth: true,
+                ),
+                const Divider(
+                    height: 20,
+                    thickness: .05,
+                    indent: 0,
+                    endIndent: 0,
+                    color: Colors.black),
+                CustomTextField(
+                  controller: _usernameController,
+                  labelText: 'Username',
+                  hintText: 'Enter your email',
+                  icon: Icons.email,
+                  onChanged: (text) {
+                    print('Entered text: $text');
+                  },
+                  validator: (value) => commonValidator(value, 'username'),
+                ),
+                // SizedBox 말고 TextFieldGroup
+                CustomTextField(
+                  controller: _passwordController,
+                  labelText: 'Password',
+                  hintText: 'Enter your email',
+                  onChanged: (text) {
+                    print('Entered text: $text');
+                  },
+                  validator: (value) => commonValidator(value, 'password'),
+                ),
+
+                if (errorMessage.isNotEmpty)
+                  Text(
+                    errorMessage,
+                    style: TextStyle(color: Colors.red),
                   ),
-                  // SizedBox 말고 TextFieldGroup
-                  CustomTextField(
-                    controller: _passwordController,
-                    labelText: 'Password',
-                    hintText: 'Enter your email',
-                    onChanged: (text) {
-                      print('Entered text: $text');
-                    },
-                    validator: (value) => commonValidator(value, 'password'),
-                  ),
-
-                  if (errorMessage.isNotEmpty)
-                    Text(
-                      errorMessage,
-                      style: TextStyle(color: Colors.red),
-                    ),
-
-                  Column(spacing: 4.0, children: [
-                    CustomButton(
-                      variant: 'secondary',
-                      size: 'small',
-                      text: '로그인',
-                      onPressed: _login,
-                    ),
-                    CustomButton(
-                      variant: 'secondary',
-                      size: 'small',
-                      text: '회원가입',
-                      onPressed: _register,
-                    ),
-                  ]),
-
-                  Text(_controller.text),
-                ],
-              ),
-            )),
-      ),
+                CustomButton(
+                  variant: 'secondary',
+                  text: '로그인',
+                  onPressed: _login,
+                  isFullWidth: true,
+                ),
+              ],
+            ),
+          ),
+        ),
+      )),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/messages_screen.dart';
@@ -48,27 +49,27 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  int _counter = 0;
-
   String selectedPage = '';
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  // List _pages = [];
+
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInfo();
+
+    print(_user);
   }
 
-  List _pages = [
-    NotificationsScreen(),
-  ];
+  Future<void> _getUserInfo() async {
+    User? user = FirebaseAuth.instance.currentUser;
 
-  // bottomNavigationBar state
-  // int _selectedIndex = 0;
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
+    setState(() {
+      _user = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,24 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.navigate_next),
-            tooltip: 'Go to the next page',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Next page'),
-                    ),
-                    body: const Center(
-                      child: Text('This is the next page'),
-                    ),
-                  );
-                },
-              ));
             },
           ),
         ],
@@ -190,14 +173,15 @@ class _HomeScreenState extends State<HomeScreen> {
               return Center(child: Text("No data found"));
             } else {
               // 데이터를 가져오고 화면에 표시
-              List<Map<String, dynamic>> users = snapshot.data!;
+              List<Map<String, dynamic>> products = snapshot.data!;
               return ListView.builder(
-                itemCount: users.length,
+                itemCount: products.length,
                 itemBuilder: (context, index) {
-                  var user = users[index];
+                  var product = products[index];
                   return ListTile(
-                    title: Text(user['price'].toString() ?? 'No name'),
-                    subtitle: Text('createdAt: ${user['createdAt']}'),
+                    leading: Text(_user!.uid ?? 'not login'),
+                    title: Text(product['price'].toString() ?? 'No name'),
+                    subtitle: Text('createdAt: ${product['createdAt']}'),
                   );
                 },
               );
@@ -205,7 +189,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         NotificationsScreen(),
-        MessagesScreen(),
+        // MessagesScreen(),
         ProfileScreen()
       ][currentPageIndex],
 
@@ -226,6 +210,19 @@ class _HomeScreenState extends State<HomeScreen> {
       //     ),
       //   ),
 
+      // home: StreamBuilder<User?>(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return CircularProgressIndicator(); // 로딩 화면
+      //     }
+      //     if (snapshot.hasData) {
+      //       return HomeScreen(); // 로그인된 상태
+      //     }
+      //     return LoginScreen(); // 로그인되지 않은 상태
+      //   },
+      // ),
+
       bottomNavigationBar: CustomBottomNavBar(
         currentPageIndex: currentPageIndex,
         onDestinationSelected: (int index) {
@@ -236,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {},
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
@@ -18,6 +19,8 @@ import 'package:flutter_application_1/widgets/custom_checkbox.dart';
 import 'package:flutter_application_1/widgets/custom_chip.dart';
 import 'package:flutter_application_1/widgets/custom_input_chip.dart';
 import 'package:flutter_application_1/widgets/result.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ComponentsScreen extends ConsumerStatefulWidget {
@@ -122,6 +125,8 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
     // 글로벌 상태
     final globalCounter = ref.watch(counterProvider);
 
+    final globalCounter2 = ref.watch(counterNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login Page'),
@@ -152,6 +157,27 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
                         onPressed: () {
                           ref.read(counterProvider.notifier).state--;
                         },
+                      ),
+                    ],
+                  ),
+                  Text(
+                    'Global Counter: $globalCounter2',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () => ref
+                            .read(counterNotifierProvider.notifier)
+                            .decrement(),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () => ref
+                            .read(counterNotifierProvider.notifier)
+                            .increment(),
                       ),
                     ],
                   ),
