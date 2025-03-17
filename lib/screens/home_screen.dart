@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/test_provider.dart';
+import 'package:flutter_application_1/screens/messages_screen.dart';
+import 'package:flutter_application_1/screens/notifications_screen.dart';
+import 'package:flutter_application_1/screens/profile_screen.dart';
 import 'package:flutter_application_1/widgets/custom_bottom_nav_bar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   // Firestore에서 데이터를 가져오는 메서드
   Future<List<Map<String, dynamic>>> getData() async {
     try {
-      // 'users' 컬렉션에서 데이터 가져오기
       QuerySnapshot querySnapshot = await db.collection('product').get();
 
       // 각 문서에서 데이터를 가져오기
@@ -56,6 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  List _pages = [
+    NotificationsScreen(),
+  ];
+
   // bottomNavigationBar state
   // int _selectedIndex = 0;
   // void _onItemTapped(int index) {
@@ -72,7 +78,9 @@ class _HomeScreenState extends State<HomeScreen> {
         // leading: Padding(
         //   padding: const EdgeInsets.all(8.0),
         //   child: Image.asset('assets/logo.png'), // 로고 이미지 (로컬 파일)
-        // ),
+        // )
+        // ,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Row(
           children: [
             Image.asset('assets/logo.png', height: 40),
@@ -80,7 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
             Text(widget.title),
           ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add_alert),
@@ -94,7 +101,6 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.navigate_next),
             tooltip: 'Go to the next page',
             onPressed: () {
-              // 페이지 이동
               Navigator.push(context, MaterialPageRoute<void>(
                 builder: (BuildContext context) {
                   return Scaffold(
@@ -172,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
 
-      body: <Widget>[
+      body: [
         FutureBuilder<List<Map<String, dynamic>>>(
           future: getData(), // 데이터를 가져오는 메서드 호출
           builder: (context, snapshot) {
@@ -198,112 +204,11 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           },
         ),
-
-        // Card(
-        //   shadowColor: Colors.transparent,
-        //   margin: const EdgeInsets.all(8.0),
-        //   child: SizedBox.expand(
-        //     child: Center(
-        //       child: Text(
-        //         'Home page',
-        //         style: theme.textTheme.titleLarge,
-        //       ),
-        //     ),
-        //   ),
-        // ),
-
-        /// Notifications page
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    // backgroundColor: Color,
-                    child: const Text('CJ'),
-                  ),
-                  title: Text('이창준'),
-                  subtitle: Text('벤치마킹 참고자료 공유 드라이브에 올려놨어요.'),
-                ),
-              ),
-              Card(
-                child: ListTile(
-                  leading: Icon(Icons.notifications_sharp),
-                  title: Text('Notification 2'),
-                  subtitle: Text('This is a notification'),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        /// Messages page
-        ListView.builder(
-          reverse: true,
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) {
-            if (index == 0) {
-              return Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Text(
-                    'Hello',
-                    style: theme.textTheme.bodyLarge!
-                        .copyWith(color: theme.colorScheme.onPrimary),
-                  ),
-                ),
-              );
-            }
-            return Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: const EdgeInsets.all(8.0),
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Text(
-                  'Hi!',
-                  style: theme.textTheme.bodyLarge!
-                      .copyWith(color: theme.colorScheme.onPrimary),
-                ),
-              ),
-            );
-          },
-        ),
-
-        // 프로필
-        Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  CircleAvatar(
-                    // backgroundColor: Color,
-                    radius: 40.0,
-                    child: const Text('CJ', style: TextStyle(fontSize: 32)),
-                  ),
-                  SizedBox(height: 4.0), // CircleAvatar와 Text 사이의 간격을 16.0으로 설정
-                  Text(
-                    '이창준',
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),
-                  ),
-                  Image.asset('images/food.png'),
-                ],
-              ),
-            )),
+        NotificationsScreen(),
+        MessagesScreen(),
+        ProfileScreen()
       ][currentPageIndex],
+
       // );
       //   body: Center(
       //     child: Column(
@@ -320,6 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //       ],
       //     ),
       //   ),
+
       bottomNavigationBar: CustomBottomNavBar(
         currentPageIndex: currentPageIndex,
         onDestinationSelected: (int index) {
