@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
+import 'package:flutter_application_1/widgets/custom_form.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -115,60 +116,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
         title: Text('회원가입'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(gridMargin),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                spacing: 8,
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomButton(
-                    variant: 'secondary',
-                    text: '구굴로시작하긔',
-                    isFullWidth: true,
-                    onPressed: signInWithGoogle,
-                  ),
+        child: CustomForm(
+          formKey: _formKey,
+          children: [
+            CustomButton(
+              variant: 'secondary',
+              text: '구굴로시작하긔',
+              isFullWidth: true,
+              onPressed: signInWithGoogle,
+            ),
 
-                  CustomTextField(
-                    controller: _usernameController,
-                    labelText: 'Username',
-                    hintText: 'Enter your email',
-                    icon: Icons.email,
-                    onChanged: (text) {
-                      print('Entered text: $text');
-                    },
-                    validator: (value) => commonValidator(value, 'username'),
-                  ),
-                  // SizedBox 말고 TextFieldGroup
-                  CustomTextField(
-                    controller: _passwordController,
-                    labelText: 'Password',
-                    hintText: 'Enter your email',
-                    onChanged: (text) {
-                      print('Entered text: $text');
-                    },
-                    validator: (value) => commonValidator(value, 'password'),
-                  ),
+            CustomTextField(
+              controller: _usernameController,
+              labelText: 'Username',
+              hintText: 'Enter your email',
+              icon: Icons.email,
+              onChanged: (text) {
+                print('Entered text: $text');
+              },
+              validator: (value) => commonValidator(value, 'username'),
+            ),
+            // SizedBox 말고 TextFieldGroup
+            CustomTextField(
+              controller: _passwordController,
+              labelText: 'Password',
+              hintText: 'Enter your email',
+              onChanged: (text) {
+                print('Entered text: $text');
+              },
+              validator: (value) => commonValidator(value, 'password'),
+            ),
 
-                  if (errorMessage.isNotEmpty)
-                    Text(
-                      errorMessage,
-                      style: TextStyle(color: Colors.red),
-                    ),
-
-                  Column(spacing: 4.0, children: [
-                    CustomButton(
-                      variant: 'secondary',
-                      text: '회원가입',
-                      onPressed: _register,
-                    ),
-                  ]),
-
-                  Text(_controller.text),
-                ],
+            if (errorMessage.isNotEmpty)
+              Text(
+                errorMessage,
+                style: TextStyle(color: Colors.red),
               ),
-            )),
+
+            Column(spacing: 4.0, children: [
+              CustomButton(
+                variant: 'secondary',
+                text: '회원가입',
+                onPressed: _register,
+              ),
+            ]),
+
+            Text(_controller.text),
+          ],
+        ),
       ),
     );
   }

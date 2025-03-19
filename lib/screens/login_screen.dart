@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
+import 'package:flutter_application_1/widgets/custom_form.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -150,71 +151,56 @@ class _LoginScreenState extends State<LoginScreen> {
         title: Text('Login Page'),
       ),
       body: SingleChildScrollView(
-          child: Align(
-        alignment: Alignment.center, // 가운데 정렬
-        child: Container(
-          alignment: Alignment.center,
-          constraints: BoxConstraints(
-            // minWidth: 100,
-            maxWidth: 380,
-            minHeight: 100,
-          ),
-          padding: const EdgeInsets.all(gridMargin),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              spacing: 12,
-              // mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomButton(
-                  variant: 'secondary',
-                  text: '구굴로시작하긔',
-                  onPressed: signInWithGoogle,
-                  isFullWidth: true,
-                ),
-                const Divider(
-                    height: 20,
-                    thickness: .05,
-                    indent: 0,
-                    endIndent: 0,
-                    color: Colors.black),
-                CustomTextField(
-                  controller: _usernameController,
-                  labelText: 'Username',
-                  hintText: 'Enter your email',
-                  icon: Icons.email,
-                  onChanged: (text) {
-                    print('Entered text: $text');
-                  },
-                  validator: (value) => commonValidator(value, 'username'),
-                ),
-                // SizedBox 말고 TextFieldGroup
-                CustomTextField(
-                  controller: _passwordController,
-                  labelText: 'Password',
-                  hintText: 'Enter your email',
-                  onChanged: (text) {
-                    print('Entered text: $text');
-                  },
-                  validator: (value) => commonValidator(value, 'password'),
-                ),
-
-                if (errorMessage.isNotEmpty)
-                  Text(
-                    errorMessage,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                CustomButton(
-                  variant: 'secondary',
-                  text: '로그인',
-                  onPressed: _login,
-                  isFullWidth: true,
-                ),
-              ],
+        child: CustomForm(
+          formKey: _formKey,
+          children: [
+            CustomButton(
+              variant: 'secondary',
+              text: '구굴로시작하긔',
+              onPressed: signInWithGoogle,
+              isFullWidth: true,
             ),
-          ),
+            const Divider(
+                height: 20,
+                thickness: .05,
+                indent: 0,
+                endIndent: 0,
+                color: Colors.black),
+            CustomTextField(
+              controller: _usernameController,
+              labelText: 'Username',
+              hintText: 'Enter your email',
+              icon: Icons.email,
+              onChanged: (text) {
+                print('Entered text: $text');
+              },
+              validator: (value) => commonValidator(value, 'username'),
+            ),
+            // SizedBox 말고 TextFieldGroup
+            CustomTextField(
+              controller: _passwordController,
+              labelText: 'Password',
+              hintText: 'Enter your email',
+              onChanged: (text) {
+                print('Entered text: $text');
+              },
+              validator: (value) => commonValidator(value, 'password'),
+            ),
+
+            if (errorMessage.isNotEmpty)
+              Text(
+                errorMessage,
+                style: TextStyle(color: Colors.red),
+              ),
+            CustomButton(
+              variant: 'secondary',
+              text: '로그인',
+              onPressed: _login,
+              isFullWidth: true,
+            ),
+          ],
         ),
-      )),
+      ),
     );
   }
 }
