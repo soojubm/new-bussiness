@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
+import 'package:flutter_application_1/widgets/custom_avatar.dart';
 import 'package:flutter_application_1/widgets/custom_button_group.dart';
 import 'package:flutter_application_1/widgets/custom_choice_chip_group.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
@@ -124,7 +125,6 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
   Widget build(BuildContext context) {
     // 글로벌 상태
     final globalCounter = ref.watch(counterProvider);
-
     final globalCounter2 = ref.watch(counterNotifierProvider);
 
     return Scaffold(
@@ -133,239 +133,277 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-            padding: const EdgeInsets.all(gridMargin),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Global Counter: $globalCounter',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: () {
-                          ref.read(counterProvider.notifier).state++;
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.remove),
-                        onPressed: () {
-                          ref.read(counterProvider.notifier).state--;
-                        },
-                      ),
-                    ],
-                  ),
-                  Text(
-                    'Global Counter: $globalCounter2',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.remove),
-                        onPressed: () => ref
-                            .read(counterNotifierProvider.notifier)
-                            .decrement(),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: () => ref
-                            .read(counterNotifierProvider.notifier)
-                            .increment(),
-                      ),
-                    ],
-                  ),
-                  Result(title: '페이지가 없습니다.', description: '내용입니다'),
-                  CustomText(
-                      variant: 'title',
-                      text: 'Title 텍스트',
-                      color: Colors.indigo),
-                  CustomText(variant: 'body', text: 'body 텍스트'),
-                  CustomText(variant: 'label', text: 'label 텍스트'),
-
-                  Column(spacing: 4.0, children: [
-                    CustomButton(
-                      variant: 'fille',
-                      size: 'small',
-                      text: '로그인',
-                      onPressed: _login,
+          padding: const EdgeInsets.all(gridMargin),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Global Counter: $globalCounter',
+                  style: TextStyle(fontSize: 30),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.add),
+                      onPressed: () {
+                        ref.read(counterProvider.notifier).state++;
+                      },
                     ),
-                    CustomButton(
-                      variant: 'secondary',
-                      size: 'small',
-                      text: '로그인',
-                      onPressed: _login,
+                    IconButton(
+                      icon: Icon(Icons.remove),
+                      onPressed: () {
+                        ref.read(counterProvider.notifier).state--;
+                      },
                     ),
-                    CustomButton(
-                      variant: 'fille',
-                      text: '로그인',
-                      onPressed: _login,
+                  ],
+                ),
+                Text(
+                  'Global Counter: $globalCounter2',
+                  style: TextStyle(fontSize: 30),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove),
+                      onPressed: () => ref
+                          .read(counterNotifierProvider.notifier)
+                          .decrement(),
                     ),
-                  ]),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () => ref
+                          .read(counterNotifierProvider.notifier)
+                          .increment(),
+                    ),
+                  ],
+                ),
+                Result(title: '페이지가 없습니다.', description: '내용입니다'),
+                CustomText(
+                    variant: 'title', text: 'Title 텍스트', color: Colors.indigo),
+                CustomText(variant: 'body', text: 'body 텍스트'),
+                CustomText(variant: 'label', text: 'label 텍스트'),
 
-                  // 왜 안 됨
-                  CustomButtonGroup(
-                    firstButtonText: '확인',
-                    secondButtonText: '취소',
-                    onFirstButtonPressed: () {
-                      print('확인');
-                    },
-                    onSecondButtonPressed: () {
-                      print('취소');
-                    },
+                Column(spacing: 4.0, children: [
+                  CustomButton(
+                    variant: 'fille',
+                    size: 'small',
+                    text: '로그인',
+                    onPressed: _login,
                   ),
-
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    CustomIconButton(
-                        icon: Icons.volume_up,
-                        tooltip: "아이콘 버튼 스몰",
-                        onPressed: () {
-                          print('아이콘 버튼이 눌렸습니다!');
-                        },
-                        size: ButtonSize.small),
-                    CustomIconButton(
-                        icon: Icons.volume_up,
-                        tooltip: "아이콘 버튼 미디엄",
-                        onPressed: () {
-                          print('아이콘 버튼이 눌렸습니다!');
-                        }),
-                  ]),
-                  CustomCheckbox(
-                    value: _isChecked,
-                    onChanged: _handleCheckboxChange,
+                  CustomButton(
+                    variant: 'secondary',
+                    size: 'small',
+                    text: '로그인',
+                    onPressed: _login,
                   ),
-
-                  // CustomRadio(
-                  //   value: _selectedValue == 0,
-                  //   onChanged: (bool newValue) {
-                  //     _handleRadioValueChanged(newValue ? 0 : null);
-                  //   },
-                  // ),
-                  // SizedBox(height: 10),
-                  // CustomRadio(
-                  //   value: _selectedValue == 1,
-                  //   onChanged: (bool newValue) {
-                  //     _handleRadioValueChanged(newValue ? 1 : null);
-                  //   },
-                  // ),
-
-                  CustomRadioGroup(
-                    options: ['Option 1', 'Option 2', 'Option 3'], // 라디오 버튼 옵션
-                    selectedValue: _selectedIndex, // 선택된 인덱스
-                    onChanged: _handleRadioValueChanged1, // 라디오 버튼 선택 시 호출되는 콜백
+                  CustomButton(
+                    variant: 'fille',
+                    text: '로그인',
+                    onPressed: _login,
                   ),
+                ]),
 
-                  CustomChip(label: "커스텀 칩이다 이놈아 에라이 이놈어ㅏ"),
-                  CustomInputChip(label: "InputChip"),
+                // 왜 안 됨
+                CustomButtonGroup(
+                  firstButtonText: '확인',
+                  secondButtonText: '취소',
+                  onFirstButtonPressed: () {
+                    print('확인');
+                  },
+                  onSecondButtonPressed: () {
+                    print('취소');
+                  },
+                ),
 
-                  CustomInputChipGroup(
-                    filters: inputChips,
-                    onDeleted: handleChipDeleted,
-                    // selectedFilters: selectedFilters,
-                    // onSelectionChanged: onSelectionChanged,
-                  ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  CustomIconButton(
+                      icon: Icons.volume_up,
+                      tooltip: "아이콘 버튼 스몰",
+                      onPressed: () {
+                        print('아이콘 버튼이 눌렸습니다!');
+                      },
+                      size: ButtonSize.small),
+                  CustomIconButton(
+                      icon: Icons.volume_up,
+                      tooltip: "아이콘 버튼 미디엄",
+                      onPressed: () {
+                        print('아이콘 버튼이 눌렸습니다!');
+                      }),
+                ]),
+                CustomCheckbox(
+                  value: _isChecked,
+                  onChanged: _handleCheckboxChange,
+                ),
 
-                  CustomChoiceChipGroup(
-                    selectedIndex: _selectedIndex1, // MyApp에서 관리되는 상태 전달
-                    chipLabels: _chipLabels,
-                    onSelectionChanged: (int index) {
-                      setState(() {
-                        _selectedIndex1 = index; // 상태를 MyApp에서 업데이트
-                      });
-                    },
-                  ),
+                // CustomRadio(
+                //   value: _selectedValue == 0,
+                //   onChanged: (bool newValue) {
+                //     _handleRadioValueChanged(newValue ? 0 : null);
+                //   },
+                // ),
+                // SizedBox(height: 10),
+                // CustomRadio(
+                //   value: _selectedValue == 1,
+                //   onChanged: (bool newValue) {
+                //     _handleRadioValueChanged(newValue ? 1 : null);
+                //   },
+                // ),
 
-                  CustomFilterChipGroup(
-                    filters: [
-                      'FilterChip 1',
-                      'FilterChip 2',
-                      'FilterChip 3',
-                      'FilterChip 4'
-                    ],
-                    selectedFilters: selectedFilters,
-                    onSelectionChanged: onSelectionChanged,
-                  ),
+                CustomRadioGroup(
+                  options: ['Option 1', 'Option 2', 'Option 3'], // 라디오 버튼 옵션
+                  selectedValue: _selectedIndex, // 선택된 인덱스
+                  onChanged: _handleRadioValueChanged1, // 라디오 버튼 선택 시 호출되는 콜백
+                ),
 
-                  CustomSwitch(
-                    value: _isSwitched,
-                    onChanged: _toggleSwitch,
-                  ),
-                  // Button to navigate to the NativePluginWidget page
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NativePluginWidget()),
-                      );
-                    },
-                    child: Text('Open Image Picker'),
-                  ),
+                CustomChip(label: "커스텀 칩이다 이놈아 에라이 이놈어ㅏ"),
+                CustomInputChip(label: "InputChip"),
 
-                  const SizedBox(height: 8),
+                CustomInputChipGroup(
+                  filters: inputChips,
+                  onDeleted: handleChipDeleted,
+                  // selectedFilters: selectedFilters,
+                  // onSelectionChanged: onSelectionChanged,
+                ),
 
-                  // dialog
-                  ElevatedButton(
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => Dialog(
-                        child: Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            // mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              CustomText(
-                                  variant: 'body',
-                                  text: 'This is a typical dialog.'),
-                              const SizedBox(height: 4),
-                              const Text('This is a typical dialog.'),
-                              const SizedBox(height: 15),
-                              // buttonGroup
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('Close'),
-                              ),
-                            ],
-                          ),
+                CustomChoiceChipGroup(
+                  selectedIndex: _selectedIndex1, // MyApp에서 관리되는 상태 전달
+                  chipLabels: _chipLabels,
+                  onSelectionChanged: (int index) {
+                    setState(() {
+                      _selectedIndex1 = index; // 상태를 MyApp에서 업데이트
+                    });
+                  },
+                ),
+
+                CustomFilterChipGroup(
+                  filters: [
+                    'FilterChip 1',
+                    'FilterChip 2',
+                    'FilterChip 3',
+                    'FilterChip 4'
+                  ],
+                  selectedFilters: selectedFilters,
+                  onSelectionChanged: onSelectionChanged,
+                ),
+
+                CustomSwitch(
+                  value: _isSwitched,
+                  onChanged: _toggleSwitch,
+                ),
+                // Button to navigate to the NativePluginWidget page
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NativePluginWidget()),
+                    );
+                  },
+                  child: Text('Open Image Picker'),
+                ),
+
+                const SizedBox(height: 8),
+
+                // dialog
+                ElevatedButton(
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => Dialog(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          // mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            CustomText(
+                                variant: 'body',
+                                text: 'This is a typical dialog.'),
+                            const SizedBox(height: 4),
+                            const Text('This is a typical dialog.'),
+                            const SizedBox(height: 15),
+                            // buttonGroup
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Close'),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    child: const Text('Show Dialog'),
                   ),
+                  child: const Text('Show Dialog'),
+                ),
 
-                  const SizedBox(height: 8),
+                const SizedBox(height: 8),
 
-                  // bottom sheet
-                  ElevatedButton(
-                    child: Text('showModalBottomSheet'),
-                    onPressed: () {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CustomModalBottomSheet(
-                            title: 'Modal BottomSheet',
-                            child: ElevatedButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('Close BottomSheet'),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  )
-                ],
-              ),
-            )),
+                // bottom sheet
+                ElevatedButton(
+                  child: Text('showModalBottomSheet'),
+                  onPressed: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomModalBottomSheet(
+                          title: 'Modal BottomSheet',
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Text('Close BottomSheet'),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 8),
+
+                // AlertDialog
+                TextButton(
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('AlertDialog Title'),
+                      content: const Text('AlertDialog description'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'OK'),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  child: const Text('Show AlertDialog widget'),
+                ),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: 12,
+                  children: [
+                    CustomAvatar(
+                      size: 'small',
+                      imageUrl: 'https://example.com/path/to/image.jpg',
+                    ),
+                    CustomAvatar(
+                      size: 'medium',
+                      imageUrl: 'https://example.com/path/to/image.jpg',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
