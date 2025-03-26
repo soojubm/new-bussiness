@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
 import 'package:flutter_application_1/widgets/custom_form.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
@@ -111,9 +112,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         automaticallyImplyLeading: false,
-        title: Text('회원가입'),
+        title: '회원가입',
       ),
       body: SingleChildScrollView(
         child: CustomForm(
@@ -196,8 +197,8 @@ class _NativePluginWidgetState extends State<NativePluginWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Image Picker'),
+      appBar: CustomAppBar(
+        title: 'Image Picker',
       ),
       body: Container(
         color: Colors.indigo,

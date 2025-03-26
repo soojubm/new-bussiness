@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -14,8 +15,8 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
+      appBar: CustomAppBar(
+        title: 'Settings',
       ),
       body: ListView(
         padding: EdgeInsets.all(16.0),

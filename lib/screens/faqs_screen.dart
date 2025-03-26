@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_text.dart';
 
 class FAQsScreen extends StatefulWidget {
@@ -25,8 +26,8 @@ class _FAQSsScreenState extends State<FAQsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('자주 묻는 질문'),
+      appBar: CustomAppBar(
+        title: '자주 묻는 질문',
       ),
       body: ListView.builder(
         itemCount: faqs.length,

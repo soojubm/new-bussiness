@@ -4,6 +4,7 @@ import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/messages_screen.dart';
 import 'package:flutter_application_1/screens/notifications_screen.dart';
 import 'package:flutter_application_1/screens/profile_screen.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_bottom_nav_bar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: AppBar(title: Text('Home Screen')),
+//       appBar: CustomAppBar(title: 'Home Screen'),
 //       body: Center(child: Text('Welcome to Home Screen')),
 //     );
 //   }
@@ -75,24 +76,22 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         // leading: Padding(
         //   padding: const EdgeInsets.all(8.0),
         //   child: Image.asset('assets/logo.png'), // 로고 이미지 (로컬 파일)
         // )
         // ,
-        toolbarHeight: 80.0,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         // bottom: TabBar(tabs: [Tab(icon: Icon(Icons.home), text: 'home')]),
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Row(
-          children: [
-            Image.asset('assets/logo.png', height: 40),
-            SizedBox(width: 10),
-            Text(widget.title),
-          ],
-        ),
+        // title: Row(
+        //   children: [
+        //     Image.asset('assets/logo.png', height: 40),
+        //     SizedBox(width: 10),
+        //     Text(widget.title),
+        //   ],
+        // ),
+        title: widget.title,
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add_alert),

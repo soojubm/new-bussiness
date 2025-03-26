@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -125,7 +126,7 @@ class SecondPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Second Page")),
+      appBar: CustomAppBar(title: "Second Page"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +145,7 @@ class Delete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("계정 삭제")),
+      appBar: CustomAppBar(title: "계정 삭제"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -163,7 +164,7 @@ class DeleteComplete extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("계정 삭제")),
+      appBar: CustomAppBar(title: "계정 삭제"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

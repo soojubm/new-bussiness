@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 
 class NotificationsScreen extends StatefulWidget {
   @override
@@ -14,8 +15,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
+      appBar: CustomAppBar(
+        title: 'Settings',
       ),
       body: ListView(children: [
         ListTile(
@@ -58,8 +59,8 @@ class _SettingsTestScreenState extends State<SettingsTestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Settings'),
+      appBar: CustomAppBar(
+        title: 'Settings',
       ),
       body: ListView(children: [
         SwitchListTile(

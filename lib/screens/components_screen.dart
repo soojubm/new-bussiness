@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_avatar.dart';
 import 'package:flutter_application_1/widgets/custom_button_group.dart';
 import 'package:flutter_application_1/widgets/custom_card.dart';
@@ -129,8 +130,8 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
     final globalCounter2 = ref.watch(counterNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Page'),
+      appBar: CustomAppBar(
+        title: 'Login Page',
       ),
       body: SingleChildScrollView(
         child: Padding(
