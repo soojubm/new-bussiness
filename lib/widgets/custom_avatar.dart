@@ -16,11 +16,11 @@ class CustomAvatar extends StatelessWidget {
   double _getSize() {
     switch (size) {
       case 'small':
-        return 40.0;
+        return 32.0;
       case 'medium':
-        return 80.0;
+        return 48.0;
       default:
-        return 40.0;
+        return 32.0;
     }
   }
 

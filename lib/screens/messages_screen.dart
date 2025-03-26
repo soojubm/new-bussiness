@@ -23,7 +23,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
       //     ),
       //   ),
       // ),
-      body: ListView.builder(
+      // body: ListView.builder( // ListView.custom
+      body: ListView.separated(
         reverse: true,
         itemCount: 2,
         itemBuilder: (BuildContext context, int index) {
@@ -61,6 +62,9 @@ class _MessagesScreenState extends State<MessagesScreen> {
               ),
             ),
           );
+        },
+        separatorBuilder: (context, index) {
+          return Divider();
         },
       ),
     );

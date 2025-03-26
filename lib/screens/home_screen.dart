@@ -81,7 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
         //   child: Image.asset('assets/logo.png'), // 로고 이미지 (로컬 파일)
         // )
         // ,
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        toolbarHeight: 80.0,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        // bottom: TabBar(tabs: [Tab(icon: Icon(Icons.home), text: 'home')]),
+        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Row(
           children: [
             Image.asset('assets/logo.png', height: 40),
@@ -106,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 33, 40, 46),
               ),
               child: Text(
                 'Drawer Header',
