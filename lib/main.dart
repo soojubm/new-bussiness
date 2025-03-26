@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
 import 'package:flutter_application_1/screens/components_screen.dart';
+import 'package:flutter_application_1/screens/faqs_screen.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
 import 'package:flutter_application_1/screens/signup_screen.dart';
 import 'package:flutter_application_1/theme.dart';
@@ -87,6 +88,9 @@ class MyApp extends ConsumerWidget {
         },
         '/components': (BuildContext context) {
           return ComponentsScreen();
+        },
+        '/faqs': (BuildContext context) {
+          return FAQsScreen();
         },
         // '/': (context) => LoginScreen(), // 로그인 페이지
       },

@@ -5,6 +5,7 @@ import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
 import 'package:flutter_application_1/widgets/custom_avatar.dart';
 import 'package:flutter_application_1/widgets/custom_button_group.dart';
+import 'package:flutter_application_1/widgets/custom_card.dart';
 import 'package:flutter_application_1/widgets/custom_choice_chip_group.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
 import 'package:flutter_application_1/widgets/custom_filter_chip_group.dart';
@@ -386,7 +387,7 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
                   child: const Text('Show AlertDialog widget'),
                 ),
 
-                Column(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   spacing: 12,
                   children: [
@@ -399,6 +400,11 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
                       imageUrl: 'https://example.com/path/to/image.jpg',
                     ),
                   ],
+                ),
+                CustomCard(
+                  title: 'Card Title 1',
+                  description: 'This is a description of the first card.',
+                  icon: Icons.star,
                 ),
               ],
             ),

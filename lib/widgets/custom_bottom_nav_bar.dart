@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// BottomNavigationBar 1.x / NavigationBar 3.0
+
 class CustomBottomNavBar extends StatelessWidget {
   final int currentPageIndex;
   final ValueChanged<int> onDestinationSelected;
