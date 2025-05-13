@@ -1,45 +1,51 @@
 import 'package:flutter/material.dart';
 
+enum AppBarVariant { menu, up }
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final IconData? icon;
-  final bool isIconRight;
+  final AppBarVariant variant;
+  final VoidCallback? onMenuPressed;
+  final VoidCallback? onBackPressed;
   final List<Widget>? actions;
-  final bool automaticallyImplyLeading;
 
-  CustomAppBar({
+  const CustomAppBar({
+    Key? key,
     required this.title,
-    this.icon,
-    this.isIconRight = false,
+    this.variant = AppBarVariant.up, // ✅ 기본값 설정
+    this.onMenuPressed,
+    this.onBackPressed,
     this.actions,
-    this.automaticallyImplyLeading = true,
-  });
+  }) : super(key: key);
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
+    final isMenu = variant == AppBarVariant.menu;
+
     return AppBar(
-      title: isIconRight
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(icon),
-                SizedBox(width: 10),
-                Text(title),
-              ],
+      automaticallyImplyLeading: false,
+      centerTitle: isMenu,
+      leading: isMenu
+          ? IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: onMenuPressed ?? () {},
             )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(icon),
-                SizedBox(width: 10),
-                Text(title),
-              ],
+          : IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed:
+                  onBackPressed ?? () => Navigator.of(context).maybePop(),
             ),
-      // leading: isIconRight ? null : Icon(icon),
+      title: Align(
+        alignment: isMenu ? Alignment.center : Alignment.centerLeft,
+        child: Text(
+          title,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
+      ),
       actions: actions,
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

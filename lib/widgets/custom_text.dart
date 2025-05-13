@@ -24,7 +24,10 @@ class CustomText extends StatelessWidget {
       text,
       style: style.copyWith(color: color),
       textAlign: textAlign,
-      overflow: overflow,
+
+      maxLines: null, // 제한 없음
+      overflow: TextOverflow.visible, // 또는 제거
+      softWrap: true, // 자동 줄바꿈 허용
     );
   }
 
@@ -44,6 +47,26 @@ class CustomText extends StatelessWidget {
         return TextStyle(
           fontSize: 12.0,
           fontWeight: FontWeight.w400,
+        );
+
+      //
+      case 'h3':
+        return TextStyle(
+          fontSize: 32.0,
+          height: 1.3,
+          fontWeight: FontWeight.w700,
+        );
+      case 'h4':
+        return TextStyle(
+          fontSize: 24.0,
+          height: 1.35,
+          fontWeight: FontWeight.w700,
+        );
+      case 'label1':
+        return TextStyle(
+          fontSize: 16.0,
+          height: 1.5,
+          fontWeight: FontWeight.normal,
         );
       default:
         return TextStyle(

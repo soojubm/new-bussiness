@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/widgets/custom_row.dart';
+import 'package:flutter_application_1/widgets/custom_text.dart';
 
 class CustomModalBottomSheet extends StatelessWidget {
   final String title;
@@ -25,24 +27,22 @@ class CustomModalBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ],
-            ),
+          CustomRow(
+            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+            backgroundColor: Colors.green,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(
+                variant: 'subhead',
+                text: title,
+              ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
           ),
-          const Divider(color: Colors.grey, thickness: 0.25),
+          // const Divider(color: Colors.grey, thickness: 0.25),
           if (child != null) ...[
             child!,
           ],

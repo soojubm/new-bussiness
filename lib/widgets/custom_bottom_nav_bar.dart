@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // BottomNavigationBar 1.x / NavigationBar 3.0
 
@@ -32,24 +33,39 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return NavigationBar(
       onDestinationSelected: onDestinationSelected,
-      indicatorColor: Colors.amber,
+      // indicatorColor: Colors.amber,
       selectedIndex: currentPageIndex,
-      destinations: const <Widget>[
+      destinations: <Widget>[
         NavigationDestination(
-          selectedIcon: Icon(Icons.home),
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        NavigationDestination(
-          icon: Badge(child: Icon(Icons.notifications_sharp)),
-          label: 'Notifications',
-        ),
-        NavigationDestination(
-          icon: Badge(
-            label: Text('2'),
-            child: Icon(Icons.person),
+          icon: SvgPicture.asset(
+            '/icons/template.svg',
+            width: 24.0,
+            height: 24.0,
+            color: currentPageIndex == 0 ? Colors.black : Color(0xFF4F4F4F),
           ),
-          label: '마이페이지',
+          label: '템플릿',
+        ),
+        NavigationDestination(
+          icon: SvgPicture.asset(
+            '/icons/ai.svg',
+            width: 24.0,
+            height: 24.0,
+            color: currentPageIndex == 1 ? Colors.black : Color(0xFF4F4F4F),
+          ),
+          label: 'AI',
+        ),
+        NavigationDestination(
+          icon: SvgPicture.asset(
+            '/icons/library.svg',
+            width: 24.0,
+            height: 24.0,
+            color: currentPageIndex == 2 ? Colors.black : Color(0xFF4F4F4F),
+          ),
+          // icon: Badge(
+          //   label: Text('2'),
+          //   child: Icon(Icons.person),
+          // ),
+          label: '라이브러리',
         ),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
+import 'package:flutter_application_1/widgets/custom_row.dart';
 
 class CustomButtonGroup extends StatelessWidget {
   final String firstButtonText;
@@ -16,7 +17,7 @@ class CustomButtonGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return CustomRow(
       mainAxisAlignment: MainAxisAlignment.start,
       textDirection: TextDirection.rtl,
       spacing: 8,

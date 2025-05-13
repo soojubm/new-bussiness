@@ -5,13 +5,16 @@ class CustomRow extends StatelessWidget {
   final Color backgroundColor;
   final EdgeInsetsGeometry padding;
   final MainAxisAlignment mainAxisAlignment;
+  final double spacing;
+  final TextDirection textDirection;
 
-  CustomRow({
-    required this.children,
-    this.backgroundColor = Colors.transparent,
-    this.padding = const EdgeInsets.all(0),
-    this.mainAxisAlignment = MainAxisAlignment.start,
-  });
+  CustomRow(
+      {required this.children,
+      this.backgroundColor = Colors.transparent,
+      this.padding = const EdgeInsets.all(0),
+      this.mainAxisAlignment = MainAxisAlignment.start,
+      this.spacing = 0,
+      this.textDirection = TextDirection.ltr});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,8 @@ class CustomRow extends StatelessWidget {
       padding: padding,
       child: Row(
         mainAxisAlignment: mainAxisAlignment,
+        textDirection: textDirection,
+        spacing: spacing,
         children: children,
       ),
     );
