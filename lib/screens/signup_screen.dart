@@ -113,7 +113,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        automaticallyImplyLeading: false,
         title: '회원가입',
       ),
       body: SingleChildScrollView(
@@ -164,64 +163,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
             Text(_controller.text),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class NativePluginWidget extends StatefulWidget {
-  const NativePluginWidget({super.key});
-
-  @override
-  State<NativePluginWidget> createState() => _NativePluginWidgetState();
-}
-
-class _NativePluginWidgetState extends State<NativePluginWidget> {
-  XFile? _image;
-
-  Future getGalleryImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-    });
-  }
-
-  Future getCameraImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.camera);
-    setState(() {
-      _image = image;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Image Picker',
-      ),
-      body: Container(
-        color: Colors.indigo,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: (<Widget>[
-              ElevatedButton(
-                  onPressed: getGalleryImage, child: Text('gallery')),
-              Center(
-                child: _image == null
-                    ? Text(
-                        'No image selected',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    : CircleAvatar(
-                        backgroundImage: FileImage(File(_image!.path)),
-                        radius: 100,
-                      ),
-              ),
-              ElevatedButton(onPressed: getCameraImage, child: Text('camera')),
-            ]),
-          ),
         ),
       ),
     );

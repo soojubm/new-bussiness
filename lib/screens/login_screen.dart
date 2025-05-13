@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
 import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
+import 'package:flutter_application_1/widgets/custom_column.dart';
 import 'package:flutter_application_1/widgets/custom_form.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -148,7 +149,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        automaticallyImplyLeading: false,
         title: 'Login Page',
       ),
       body: SingleChildScrollView(
@@ -236,29 +236,24 @@ class _NativePluginWidgetState extends State<NativePluginWidget> {
       appBar: CustomAppBar(
         title: 'Image Picker',
       ),
-      body: Container(
-        color: Colors.indigo,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: (<Widget>[
-              ElevatedButton(
-                  onPressed: getGalleryImage, child: Text('gallery')),
-              Center(
-                child: _image == null
-                    ? Text(
-                        'No image selected',
-                        style: TextStyle(color: Colors.white),
-                      )
-                    : CircleAvatar(
-                        backgroundImage: FileImage(File(_image!.path)),
-                        radius: 100,
-                      ),
-              ),
-              ElevatedButton(onPressed: getCameraImage, child: Text('camera')),
-            ]),
+      body: CustomColumn(
+        mainAxisAlignment: MainAxisAlignment.center,
+        backgroundColor: Colors.indigo,
+        children: (<Widget>[
+          ElevatedButton(onPressed: getGalleryImage, child: Text('gallery')),
+          Center(
+            child: _image == null
+                ? Text(
+                    'No image selected',
+                    style: TextStyle(color: Colors.white),
+                  )
+                : CircleAvatar(
+                    backgroundImage: FileImage(File(_image!.path)),
+                    radius: 100,
+                  ),
           ),
-        ),
+          ElevatedButton(onPressed: getCameraImage, child: Text('camera')),
+        ]),
       ),
     );
   }

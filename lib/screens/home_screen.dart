@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/test_provider.dart';
+import 'package:flutter_application_1/screens/ai_screen.dart';
 import 'package:flutter_application_1/screens/messages_screen.dart';
 import 'package:flutter_application_1/screens/notifications_screen.dart';
 import 'package:flutter_application_1/screens/profile_screen.dart';
@@ -76,33 +77,33 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        // leading: Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: Image.asset('assets/logo.png'), // 로고 이미지 (로컬 파일)
-        // )
-        // ,
-        // bottom: TabBar(tabs: [Tab(icon: Icon(Icons.home), text: 'home')]),
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // title: Row(
-        //   children: [
-        //     Image.asset('assets/logo.png', height: 40),
-        //     SizedBox(width: 10),
-        //     Text(widget.title),
-        //   ],
-        // ),
-        title: widget.title,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-        ],
-      ),
+      // appBar: CustomAppBar(
+      //   // leading: Padding(
+      //   //   padding: const EdgeInsets.all(8.0),
+      //   //   child: Image.asset('assets/logo.png'), // 로고 이미지 (로컬 파일)
+      //   // )
+      //   // ,
+      //   // bottom: TabBar(tabs: [Tab(icon: Icon(Icons.home), text: 'home')]),
+      //   // backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      //   // title: Row(
+      //   //   children: [
+      //   //     Image.asset('assets/logo.png', height: 40),
+      //   //     SizedBox(width: 10),
+      //   //     Text(widget.title),
+      //   //   ],
+      //   // ),
+      //   title: widget.title,
+      //   actions: <Widget>[
+      //     IconButton(
+      //       icon: const Icon(Icons.add_alert),
+      //       tooltip: 'Show Snackbar',
+      //       onPressed: () {
+      //         ScaffoldMessenger.of(context).showSnackBar(
+      //             const SnackBar(content: Text('This is a snackbar')));
+      //       },
+      //     ),
+      //   ],
+      // ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -155,7 +156,6 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: () {
                 setState(() {
                   selectedPage = 'Settings';
-                  // context는 어디에서 온 것?
                   // Navigator.pop(context);
                 });
               },
@@ -191,7 +191,8 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           },
         ),
-        NotificationsScreen(),
+        // NotificationsScreen(),
+        AIScreen(),
         // MessagesScreen(),
         ProfileScreen()
       ][currentPageIndex],
@@ -235,11 +236,11 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }

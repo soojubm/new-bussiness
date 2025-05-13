@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/firebase_options.dart';
+import 'package:flutter_application_1/screens/ai_screen.dart';
 import 'package:flutter_application_1/screens/components_screen.dart';
 import 'package:flutter_application_1/screens/faqs_screen.dart';
 import 'package:flutter_application_1/screens/login_screen.dart';
 import 'package:flutter_application_1/screens/signup_screen.dart';
 import 'package:flutter_application_1/theme.dart';
+import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'screens/splash_screen.dart';
 import 'screens/settings_screen.dart';
 
@@ -69,13 +71,13 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
 
       initialRoute:
-          FirebaseAuth.instance.currentUser != null ? '/components' : '/login',
+          FirebaseAuth.instance.currentUser != null ? '/components' : '/ai',
       routes: <String, WidgetBuilder>{
         // '/': (BuildContext context) {
-        //   return Scaffold(appBar: AppBar(title: const Text('Home Route')));
+        //   return Scaffold(appBar: CustomAppBar(title: const Text('Home Route')));
         // },
         '/about': (BuildContext context) {
-          return Scaffold(appBar: AppBar(title: const Text('About Route')));
+          return Scaffold(appBar: CustomAppBar(title: 'About Route'));
         },
         '/login': (BuildContext context) {
           return LoginScreen();
@@ -91,6 +93,9 @@ class MyApp extends ConsumerWidget {
         },
         '/faqs': (BuildContext context) {
           return FAQsScreen();
+        },
+        '/ai': (BuildContext context) {
+          return AIScreen();
         },
         // '/': (context) => LoginScreen(), // 로그인 페이지
       },

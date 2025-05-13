@@ -353,7 +353,7 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
                       context: context,
                       builder: (BuildContext context) {
                         return CustomModalBottomSheet(
-                          title: 'Modal BottomSheet',
+                          title: '내 사진첩',
                           child: ElevatedButton(
                             onPressed: () => Navigator.pop(context),
                             child: Text('Close BottomSheet'),
