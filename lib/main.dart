@@ -70,8 +70,9 @@ class MyApp extends ConsumerWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
 
-      initialRoute:
-          FirebaseAuth.instance.currentUser != null ? '/components' : '/ai',
+      // initialRoute:
+      //     FirebaseAuth.instance.currentUser != null ? '/components' : '/components',
+      // initialRoute: '/ai',
       routes: <String, WidgetBuilder>{
         // '/': (BuildContext context) {
         //   return Scaffold(appBar: CustomAppBar(title: const Text('Home Route')));

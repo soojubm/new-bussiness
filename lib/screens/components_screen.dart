@@ -25,6 +25,7 @@ import 'package:flutter_application_1/widgets/result.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ComponentsScreen extends ConsumerStatefulWidget {
   @override
@@ -223,14 +224,24 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
 
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   CustomIconButton(
-                      icon: Icons.volume_up,
+                      icon: SvgPicture.asset(
+                        '/icons/image_save.svg',
+                        width: 24,
+                        height: 24,
+                        // colorFilter: Color(0xFFDE3B35)),
+                      ),
                       tooltip: "아이콘 버튼 스몰",
                       onPressed: () {
                         print('아이콘 버튼이 눌렸습니다!');
                       },
                       size: ButtonSize.small),
                   CustomIconButton(
-                      icon: Icons.volume_up,
+                      icon: SvgPicture.asset(
+                        '/icons/image_save.svg',
+                        width: 24,
+                        height: 24,
+                        // colorFilter: Color(0xFFDE3B35)),
+                      ),
                       tooltip: "아이콘 버튼 미디엄",
                       onPressed: () {
                         print('아이콘 버튼이 눌렸습니다!');
@@ -310,6 +321,49 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
 
                 const SizedBox(height: 8),
 
+                Padding(
+                  // height: 64,
+                  padding: MediaQuery.of(context).viewInsets, // 키보드 대응
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // 헤더: 타이틀 + 취소, 저장
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextButton(
+                              onPressed: () =>
+                                  Navigator.of(context).pop(), // 취소
+                              child: Text('취소'),
+                            ),
+                            Text(
+                              '설정', // 타이틀
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // 저장 처리
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('저장'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Divider(height: 1),
+                      // 아래 내용들
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text('여기에 내용을 넣으세요'),
+                      ),
+                    ],
+                  ),
+                ),
+
                 // dialog
                 ElevatedButton(
                   onPressed: () => showDialog<String>(
@@ -345,23 +399,18 @@ class _ComponentsScreenState extends ConsumerState<ComponentsScreen> {
 
                 const SizedBox(height: 8),
 
-                // bottom sheet
-                ElevatedButton(
-                  child: Text('showModalBottomSheet'),
-                  onPressed: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CustomModalBottomSheet(
-                          title: '내 사진첩',
-                          child: ElevatedButton(
-                            onPressed: () => Navigator.pop(context),
-                            child: Text('Close BottomSheet'),
-                          ),
-                        );
-                      },
-                    );
-                  },
+                TextField(
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: InputBorder.none, // 테두리 없음
+                    hintText: '우아한 디자인과 깊은 맛',
+                    isDense: true, // 높이 줄임
+                    contentPadding: EdgeInsets.zero, // 내부 여백 없음
+                  ),
                 ),
 
                 const SizedBox(height: 8),

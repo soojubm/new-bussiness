@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/splash.png'), // 이미지
+            // Image.asset('assets/images/splash.png'), // 이미지
             SizedBox(height: 20),
             CircularProgressIndicator(), // 로딩 애니메이션
           ],

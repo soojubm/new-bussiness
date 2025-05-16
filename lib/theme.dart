@@ -33,6 +33,16 @@ ThemeData lightTheme = ThemeData(
       // bodyText1: TextStyle(fontSize: 16),
       ),
   buttonTheme: ButtonThemeData(buttonColor: primaryColor),
+
+  // 공통배경색야
+  scaffoldBackgroundColor: Color(0xFFFFF5F5), // 앱 전역 배경색
+  appBarTheme: AppBarTheme(
+    backgroundColor: Color(0xFFFFF5F5),
+    elevation: 0, // 그림자 제거
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    backgroundColor: Color(0xFFFFF5F5),
+  ),
   useMaterial3: true,
 );
 

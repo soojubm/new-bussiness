@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/ai_screen.dart';
+import 'package:flutter_application_1/widgets/action_list.dart';
 import 'package:flutter_application_1/widgets/chat_bubble.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
 import 'package:flutter_application_1/widgets/custom_text.dart';
@@ -57,9 +58,8 @@ class AiTextScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 24),
-              Column(
-                spacing: 8.0,
-                crossAxisAlignment: CrossAxisAlignment.start,
+
+              ActionList(
                 children: [
                   CustomButton(
                     variant: 'secondary2',
