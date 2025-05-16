@@ -1,18 +1,26 @@
-import 'dart:async'; // for Timer
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'custom_text.dart'; // CustomText가 정의된 파일 import
 
 class TypingText extends StatefulWidget {
   final String text;
   final Duration speed;
   final Function(double progress)? onProgress;
-  final TextStyle? textStyle; // 스타일 파라미터 추가
+
+  // CustomText 관련 추가 파라미터
+  final String variant;
+  final Color color;
+  final TextAlign textAlign;
+  final TextOverflow overflow;
 
   const TypingText({
     required this.text,
     this.speed = const Duration(milliseconds: 25),
     this.onProgress,
-    this.textStyle =
-        const TextStyle(fontSize: 32, fontWeight: FontWeight.bold), // 기본 스타일
+    this.variant = 'h3', // 기본 스타일
+    this.color = Colors.black,
+    this.textAlign = TextAlign.start,
+    this.overflow = TextOverflow.visible,
     Key? key,
   }) : super(key: key);
 
@@ -38,9 +46,7 @@ class _TypingTextState extends State<TypingText> {
           _visibleText += widget.text[_currentIndex];
           _currentIndex++;
         });
-        if (widget.onProgress != null) {
-          widget.onProgress!(_currentIndex / widget.text.length);
-        }
+        widget.onProgress?.call(_currentIndex / widget.text.length);
       } else {
         _timer?.cancel();
       }
@@ -49,9 +55,12 @@ class _TypingTextState extends State<TypingText> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      _visibleText,
-      style: widget.textStyle, // 스타일 적용
+    return CustomText(
+      text: _visibleText,
+      variant: widget.variant,
+      color: widget.color,
+      textAlign: widget.textAlign,
+      overflow: widget.overflow,
     );
   }
 

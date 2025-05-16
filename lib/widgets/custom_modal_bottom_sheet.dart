@@ -27,22 +27,28 @@ class CustomModalBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          CustomRow(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
-            backgroundColor: Colors.green,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomText(
-                variant: 'subhead',
-                text: title,
-              ),
-              IconButton(
-                icon: Icon(Icons.close),
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Center(
+                  child: CustomText(
+                    variant: 'h5',
+                    text: title,
+                  ),
+                ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+              ],
+            ),
           ),
-          // const Divider(color: Colors.grey, thickness: 0.25),
           if (child != null) ...[
             child!,
           ],

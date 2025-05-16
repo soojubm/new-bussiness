@@ -7,7 +7,6 @@ class CustomText extends StatelessWidget {
   final TextAlign textAlign;
   final TextOverflow overflow;
 
-  // Constructor
   CustomText({
     required this.text,
     required this.variant,
@@ -60,6 +59,12 @@ class CustomText extends StatelessWidget {
         return TextStyle(
           fontSize: 24.0,
           height: 1.35,
+          fontWeight: FontWeight.w700,
+        );
+      case 'h5':
+        return TextStyle(
+          fontSize: 20.0,
+          height: 1.4,
           fontWeight: FontWeight.w700,
         );
       case 'label1':

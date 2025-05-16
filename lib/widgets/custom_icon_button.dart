@@ -6,16 +6,19 @@ enum ButtonSize { small, medium }
 // 기본값으로 설정하는 방법
 
 class CustomIconButton extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final VoidCallback onPressed;
   final String? tooltip;
   final ButtonSize size;
+  final Color? backgroundColor;
 
-  const CustomIconButton(
-      {required this.icon,
-      required this.onPressed,
-      this.tooltip,
-      this.size = ButtonSize.medium});
+  const CustomIconButton({
+    required this.icon,
+    required this.onPressed,
+    this.tooltip,
+    this.size = ButtonSize.medium,
+    this.backgroundColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +39,15 @@ class CustomIconButton extends StatelessWidget {
     return Container(
       width: buttonDimension,
       height: buttonDimension,
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Colors.transparent,
+        shape: BoxShape.circle,
+      ),
       child: IconButton(
-        icon: Icon(
-          icon,
-          color: Colors.blue,
-          size: iconDimension,
+        icon: SizedBox(
+          width: iconDimension,
+          height: iconDimension,
+          child: Center(child: icon),
         ),
         tooltip: tooltip,
         onPressed: onPressed,
