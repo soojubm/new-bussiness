@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
   final String style;
   final bool isFullWidth;
   final Widget? leadingIcon;
-  final bool disabled; // ✅ 추가된 파라미터
+  final bool disabled;
 
   const CustomButton({
     this.size = 'medium',
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
     required this.onPressed,
     this.isFullWidth = false,
     this.leadingIcon,
-    this.disabled = false, // ✅ 기본값 false
+    this.disabled = false,
   });
 
   double _getButtonHeight() {
@@ -38,7 +38,7 @@ class CustomButton extends StatelessWidget {
   }
 
   Color _getButtonBackgroundColor() {
-    if (disabled) return Colors.grey.shade800; // ✅ 비활성 배경색
+    if (disabled) return Color(0xFFFDD8D7); // ✅ 비활성 배경색
     switch (variant) {
       case 'primary':
         return Color(0xFF373C42);
