@@ -3,11 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 // BottomNavigationBar 1.x / NavigationBar 3.0
 
-class CustomBottomNavBar extends StatelessWidget {
+class CustomNavigationBar extends StatelessWidget {
   final int currentPageIndex;
   final ValueChanged<int> onDestinationSelected;
 
-  const CustomBottomNavBar({
+  const CustomNavigationBar({
     Key? key,
     required this.currentPageIndex,
     required this.onDestinationSelected,

@@ -6,7 +6,7 @@ import 'package:flutter_application_1/screens/messages_screen.dart';
 import 'package:flutter_application_1/screens/notifications_screen.dart';
 import 'package:flutter_application_1/screens/profile_screen.dart';
 import 'package:flutter_application_1/widgets/custom_app_bar.dart';
-import 'package:flutter_application_1/widgets/custom_bottom_nav_bar.dart';
+import 'package:flutter_application_1/widgets/custom_navigation_bar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -227,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //   },
       // ),
 
-      bottomNavigationBar: CustomBottomNavBar(
+      bottomNavigationBar: CustomNavigationBar(
         currentPageIndex: currentPageIndex,
         onDestinationSelected: (int index) {
           setState(() {
