@@ -83,12 +83,16 @@ class _AIScreenState extends State<AIScreen> {
                               size: 'medium',
                               text: 'AI 텍스트',
                               onPressed: () {
-                                Navigator.push(
-                                  context,
+                                Navigator.of(context).push(
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AiTextScreen()),
+                                      builder: (_) => AiTextScreen()),
                                 );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //       builder: (context) =>
+                                //           const AiTextScreen()),
+                                // );
                               },
                             ),
                             CustomButton(

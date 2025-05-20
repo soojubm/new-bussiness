@@ -4,6 +4,8 @@ import 'package:flutter_application_1/widgets/action_list.dart';
 import 'package:flutter_application_1/widgets/chat_bubble.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
 import 'package:flutter_application_1/widgets/custom_text.dart';
+import 'package:flutter_application_1/widgets/typing_sequence.dart';
+import 'package:flutter_application_1/widgets/typing_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/custom_app_bar.dart'; // 경로는 프로젝트에 맞게 조정
 
@@ -23,39 +25,45 @@ class AiTextScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(variant: 'h4', text: '어떤 내용이 필요하세요?'),
-              SizedBox(height: 8),
-              CustomText(
-                variant: 'label1',
-                text: '상세페이지 내용, SNS 게시물 등 \n상품 홍보를 위한 내용을 자동으로 만들어 드려요.',
-                color: Color(0xFF5D5D5D),
-              ),
-              SizedBox(height: 24),
-              Column(
-                spacing: 8.0,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomButton(
-                    variant: 'secondary',
-                    size: 'medium',
-                    text: '상품 상세페이지',
-                    onPressed: () => {},
-                  ),
-                  CustomButton(
-                    variant: 'secondary',
-                    size: 'medium',
-                    text: '인스타그램',
-                    disabled: true,
-                    onPressed: () => {},
-                  ),
-                  CustomButton(
-                    variant: 'secondary',
-                    size: 'medium',
-                    text: '틱톡/쇼츠',
-                    disabled: true,
-                    onPressed: () => {},
-                  ),
-                ],
+              // SizedBox(height: 8),
+              // CustomText(
+              //   variant: 'label1',
+              //   text: '상세페이지 제작을 위한 모든 것 \nAI가 도와드려요.',
+              //   color: Color(0xFF5D5D5D),
+              // ),
+              TypingSequence(
+                firstWidget: TypingText(variant: 'h4', text: '어떤 내용이 필요하세요?'),
+                secondWidget: TypingText(
+                  variant: 'label1',
+                  text: '상세페이지 내용, SNS 게시물 등 \n상품 홍보를 위한 내용을 자동으로 만들어 드려요.',
+                  color: Color(0xFF5D5D5D),
+                ),
+                thirdWidget: Column(
+                  spacing: 8.0,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomButton(
+                      variant: 'secondary',
+                      size: 'medium',
+                      text: '상품 상세페이지',
+                      onPressed: () => {},
+                    ),
+                    CustomButton(
+                      variant: 'secondary',
+                      size: 'medium',
+                      text: '인스타그램',
+                      disabled: true,
+                      onPressed: () => {},
+                    ),
+                    CustomButton(
+                      variant: 'secondary',
+                      size: 'medium',
+                      text: '틱톡/쇼츠',
+                      disabled: true,
+                      onPressed: () => {},
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 24),
 
@@ -99,7 +107,6 @@ class AiTextScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
               // 버블
               ChatBubble(isUser: true, message: '2025년 신년 이벤트 감사 특별한 선물 와인'),
             ],

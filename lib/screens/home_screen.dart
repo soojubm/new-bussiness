@@ -20,6 +20,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 //   }
 // }
 
+// final int _numPages = 3;
+
+// late final List<GlobalKey<NavigatorState>> _navigatorKeys;
+
+// @override
+// void initState() {
+//   super.initState();
+//   _navigatorKeys = List.generate(_numPages, (_) => GlobalKey<NavigatorState>());
+//   _getUserInfo();
+// }
+
 class HomeScreen extends StatefulWidget {
   // const HomeScreen({super.key, required this.title});
   const HomeScreen({super.key, this.title = "home screen"});
@@ -32,7 +43,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  final _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+  ];
+
+  // 페이지 인덱스 TODO _
   int currentPageIndex = 0;
+
+  void _onDestinationSelected(int index) {
+    if (currentPageIndex == index) {
+      _navigatorKeys[index].currentState?.popUntil((route) => route.isFirst);
+    } else {
+      setState(() => currentPageIndex = index);
+    }
+  }
+
+  Widget _buildTabNavigator(int index, Widget rootPage) {
+    return Offstage(
+      offstage: currentPageIndex != index,
+      child: Navigator(
+        key: _navigatorKeys[index],
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(builder: (context) => rootPage);
+        },
+      ),
+    );
+  }
 
   // Firestore에서 데이터를 가져오는 메서드
   Future<List<Map<String, dynamic>>> getData() async {
@@ -163,40 +202,50 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      body: Stack(
+        children: [
+          _buildTabNavigator(0, AIScreen()),
+          _buildTabNavigator(1, AIScreen()),
+          _buildTabNavigator(2, ProfileScreen()),
+        ],
+      ),
+      // ),
+      // body: [
+      //   FutureBuilder<List<Map<String, dynamic>>>(
+      //     future: getData(), // 데이터를 가져오는 메서드 호출
+      //     builder: (context, snapshot) {
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return Center(child: CircularProgressIndicator());
+      //       } else if (snapshot.hasError) {
+      //         return Center(child: Text("Error: ${snapshot.error}"));
+      //       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      //         return Center(child: Text("No data found"));
+      //       } else {
+      //         // 데이터를 가져오고 화면에 표시
+      //         List<Map<String, dynamic>> products = snapshot.data!;
+      //         return ListView.builder(
+      //           itemCount: products.length,
+      //           itemBuilder: (context, index) {
+      //             var product = products[index];
+      //             return ListTile(
+      //               leading: Text(_user!.uid ?? 'not login'),
+      //               title: Text(product['price'].toString() ?? 'No name'),
+      //               subtitle: Text('createdAt: ${product['createdAt']}'),
+      //             );
+      //           },
+      //         );
+      //       }
+      //     },
+      //   ),
+      //   // NotificationsScreen(),
 
-      body: [
-        FutureBuilder<List<Map<String, dynamic>>>(
-          future: getData(), // 데이터를 가져오는 메서드 호출
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text("Error: ${snapshot.error}"));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(child: Text("No data found"));
-            } else {
-              // 데이터를 가져오고 화면에 표시
-              List<Map<String, dynamic>> products = snapshot.data!;
-              return ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  var product = products[index];
-                  return ListTile(
-                    leading: Text(_user!.uid ?? 'not login'),
-                    title: Text(product['price'].toString() ?? 'No name'),
-                    subtitle: Text('createdAt: ${product['createdAt']}'),
-                  );
-                },
-              );
-            }
-          },
-        ),
-        // NotificationsScreen(),
-        AIScreen(),
-        // MessagesScreen(),
-        ProfileScreen()
-      ][currentPageIndex],
-
+      //   _buildTabNavigator(1, AIScreen()),
+      //   _buildTabNavigator(2, ProfileScreen()),
+      //   // AIScreen(),
+      //   // MessagesScreen(),
+      //   // ProfileScreen()
+      //   // ][currentPageIndex],
+      // ],
       // );
       //   body: Center(
       //     child: Column(
@@ -229,18 +278,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
       bottomNavigationBar: CustomNavigationBar(
         currentPageIndex: currentPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
+        onDestinationSelected: _onDestinationSelected,
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {},
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }
