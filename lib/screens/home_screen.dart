@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/providers/test_provider.dart';
 import 'package:flutter_application_1/screens/ai_screen.dart';
+import 'package:flutter_application_1/screens/template_screen.dart';
+
 import 'package:flutter_application_1/screens/messages_screen.dart';
 import 'package:flutter_application_1/screens/notifications_screen.dart';
 import 'package:flutter_application_1/screens/profile_screen.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_application_1/widgets/custom_navigation_bar.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 // class HomeScreen extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
@@ -204,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Stack(
         children: [
-          _buildTabNavigator(0, AIScreen()),
+          _buildTabNavigator(0, TemplateScreen()),
           _buildTabNavigator(1, AIScreen()),
           _buildTabNavigator(2, ProfileScreen()),
         ],
