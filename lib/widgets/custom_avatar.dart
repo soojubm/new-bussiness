@@ -19,6 +19,8 @@ class CustomAvatar extends StatelessWidget {
         return 32.0;
       case 'medium':
         return 48.0;
+      case 'large':
+        return 64.0;
       default:
         return 32.0;
     }
