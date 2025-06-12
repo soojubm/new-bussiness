@@ -1,0 +1,2 @@
+C:/Users/insplanet/Documents/GitHub/new-bussiness/android/app/.cxx/RelWithDebInfo/2x5t1f4y/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/insplanet/Documents/GitHub/new-bussiness/android/app/.cxx/RelWithDebInfo/2x5t1f4y/armeabi-v7a/CMakeFiles/rebuild_cache.dir

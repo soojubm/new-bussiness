@@ -1,0 +1,2 @@
+C:/Users/insplanet/Documents/GitHub/new-bussiness/android/app/.cxx/RelWithDebInfo/2x5t1f4y/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/insplanet/Documents/GitHub/new-bussiness/android/app/.cxx/RelWithDebInfo/2x5t1f4y/x86_64/CMakeFiles/rebuild_cache.dir
