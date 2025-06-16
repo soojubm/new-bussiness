@@ -5,6 +5,7 @@ import 'package:flutter_application_1/widgets/custom_button.dart';
 import 'package:flutter_application_1/widgets/custom_modal_bottom_sheet.dart';
 import 'package:flutter_application_1/widgets/custom_text.dart';
 import 'package:flutter_application_1/widgets/image_with_fallback.dart';
+import 'package:flutter_application_1/widgets/typing_sequence.dart';
 import 'package:flutter_application_1/widgets/typing_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/custom_app_bar.dart'; // 경로는 프로젝트에 맞게 조정
@@ -25,7 +26,7 @@ class _AIProductDetailScreenState extends State<AiProductDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'AI 이미지',
+        title: 'AI 상세페이지',
         variant: AppBarVariant.up,
       ),
       body: SingleChildScrollView(
@@ -64,37 +65,58 @@ class _AIProductDetailScreenState extends State<AiProductDetailScreen> {
 
               // 텍스트 영역
               SizedBox(height: 16),
-              TypingText(
-                variant: "h4",
-                text: '상품에 대한 내용을 알려주세요.',
-                onProgress: (progress) {
-                  if (progress > 0.85 && !showSecondWidget) {
-                    setState(() {
-                      showSecondWidget = true;
-                      debugPrint(
-                          'showSecondWidget is now: $showSecondWidget'); // 상태 값 출력
-                    });
-                  }
-                },
-              ),
-              SizedBox(height: 8),
-
-              if (showSecondWidget) ...[
-                TypingText(
+              TypingSequence(
+                firstWidget: TypingText(
+                  variant: "h4",
+                  text: '상품에 대한 내용을 알려주세요.',
+                ),
+                secondWidget: TypingText(
                   variant: "label1",
                   text: '상품의 구체적인 특징이나 상세한 정보를 알려주시면, 더 완성도 있게 작성할 수 있어요.',
-                  onProgress: (progress) {
-                    if (progress > 0.85 && !showThirdWidget) {
-                      setState(() {
-                        showThirdWidget = true;
-                      });
-                    }
-                  },
                 ),
-                SizedBox(height: 24),
-              ],
+                // TODO buttonGroupWidget
+                thirdWidget: Column(
+                  spacing: 8.0,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          showDragHandle: true,
+                          builder: (BuildContext context) {
+                            return CustomModalBottomSheet(
+                              title: '전체 레이어 변경',
+                              child: Text('여기에 다른 내용이 들어갈 수 있습니다'),
+                            );
+                          },
+                        );
+                      },
+                      child: ImageWithFallback(
+                        imageUrl: 'assets/images/image_fallback.svg',
+                        fallbackImageUrl: 'assets/images/image_fallback.svg',
+                        loadingImageAsset: 'assets/images/image_fallback.svg',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AiProductImageEditScreen()),
+                        );
+                      },
+                      child: ImageWithFallback(
+                        imageUrl: 'assets/images/image_fallback.svg',
+                        fallbackImageUrl: 'assets/images/image_fallback.svg',
+                        loadingImageAsset: 'assets/images/image_fallback.svg',
+                      ),
+                    ),
+                    SizedBox(height: 24),
+                  ],
+                ),
+              ),
 
-              SizedBox(height: 16),
               if (showThirdWidget) ...[
                 Row(
                   spacing: 8,
@@ -111,43 +133,6 @@ class _AIProductDetailScreenState extends State<AiProductDetailScreen> {
                       },
                     ),
                   ],
-                ),
-                SizedBox(height: 24),
-              ],
-
-              if (showFourthWidget) ...[
-                GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      showDragHandle: true,
-                      builder: (BuildContext context) {
-                        return CustomModalBottomSheet(
-                          title: '전체 레이어 변경',
-                          child: Text('여기에 다른 내용이 들어갈 수 있습니다'),
-                        );
-                      },
-                    );
-                  },
-                  child: ImageWithFallback(
-                    imageUrl: 'assets/images/image_fallback.svg',
-                    fallbackImageUrl: 'assets/images/image_fallback.svg',
-                    loadingImageAsset: 'assets/images/image_fallback.svg',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AiProductImageEditScreen()),
-                    );
-                  },
-                  child: ImageWithFallback(
-                    imageUrl: 'assets/images/image_fallback.svg',
-                    fallbackImageUrl: 'assets/images/image_fallback.svg',
-                    loadingImageAsset: 'assets/images/image_fallback.svg',
-                  ),
                 ),
                 SizedBox(height: 24),
               ],
