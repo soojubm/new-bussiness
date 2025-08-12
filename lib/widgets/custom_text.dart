@@ -47,6 +47,11 @@ class CustomText extends StatelessWidget {
           fontSize: 12.0,
           fontWeight: FontWeight.w400,
         );
+      case 'label-large':
+        return TextStyle(
+          fontSize: 16.0,
+          // lineHeight: 1.4,
+        );
       case 'label1bold':
         return TextStyle(
           fontSize: 16.0,

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/screens/ai_image_screen.dart';
 import 'package:flutter_application_1/screens/ai_product_detail_screen.dart';
 import 'package:flutter_application_1/screens/ai_text_screen.dart';
@@ -13,22 +14,86 @@ import 'package:flutter_application_1/widgets/typing_text.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:typed_data';
+
 class AIScreen extends StatefulWidget {
   @override
   _AIScreenState createState() => _AIScreenState();
 }
 
 class _AIScreenState extends State<AIScreen> {
-  // bool _showSecondWidget = false;
-  // bool _showThirdWidget = false;
-  // bool _showFourthWidget = false;
-
   @override
   Widget build(BuildContext context) {
     final TextEditingController _controller = TextEditingController();
+    String _reply = '';
+
+    Uint8List? _imageBytes;
+    String? _error;
 
     void _onSearch() {
       print('검색어: ${_controller.text}');
+    }
+
+    void showDebugDialog(BuildContext context, String message) {
+      showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('디버그 출력'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('닫기'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Future<void> sendMessage(String message) async {
+      const fastapiUrl =
+          'https://caeb-115-91-159-217.ngrok-free.app/generate-image'; // ⚠️ 실제 환경에서는 IP 주소로 변경
+      final userId = 'test_user_001'; // 추후 Firebase UID로 교체
+
+      try {
+        final response = await http.post(
+          Uri.parse(fastapiUrl),
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: {
+            'prompt': '고양이가 우주복을 입고 있는 이미지 생성해줘',
+          },
+        ).timeout(Duration(seconds: 200));
+
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          String base64Str = data['image_base64'];
+
+          // showDebugDialog(context, data.toString());
+
+          setState(() {
+            _reply = 'faf: ${response.body}';
+            _imageBytes = base64Decode(base64Str);
+          });
+          // print('응답 데이터: $data');
+          // setState(() {
+          //   _reply = data;
+          // });
+        } else {
+          // showDebugDialog(context, response.body.toString());
+
+          setState(() {
+            _reply = '서버 오류: ${response.statusCode}';
+          });
+        }
+      } catch (e) {
+        // showDebugDialog(context, e.toString());
+
+        setState(() {
+          _reply = '오류 발생: $e';
+        });
+      }
     }
 
     return Scaffold(
@@ -52,7 +117,8 @@ class _AIScreenState extends State<AIScreen> {
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: IntrinsicHeight(
                 child: Container(
-                  padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 24.0),
+                  padding: const EdgeInsets.fromLTRB(
+                      horizontalPadding, 16.0, horizontalPadding, 24.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +126,8 @@ class _AIScreenState extends State<AIScreen> {
                       TypingSequence(
                         firstWidget: TypingText(
                           variant: 'h3',
-                          text: '상품 이미지를 업로드해주세요.',
+                          text: '무엇을 만들어 드릴까요?',
+                          textAlign: TextAlign.center,
                         ),
                         secondWidget: TypingText(
                           variant: 'label1',
@@ -119,6 +186,33 @@ class _AIScreenState extends State<AIScreen> {
                                           AiProductDetailScreen()),
                                 );
                               },
+                            ),
+                            Column(
+                              children: [
+                                TextField(
+                                  controller: _controller,
+                                  decoration:
+                                      InputDecoration(labelText: '메시지 입력'),
+                                ),
+                                SizedBox(height: 12),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    sendMessage(_controller.text);
+                                  },
+                                  child: Text("전송"),
+                                ),
+                                SizedBox(height: 24),
+                                Text(_imageBytes == null
+                                    ? "이미지를 업로드해주세요."
+                                    : "이미지 업로드 완료!"),
+                                _imageBytes == null
+                                    ? CircularProgressIndicator()
+                                    : Image.memory(_imageBytes!),
+                                Text("응답:"),
+                                Container(
+                                  child: Text(_reply),
+                                ),
+                              ],
                             ),
                           ],
                         ),

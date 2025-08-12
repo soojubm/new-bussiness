@@ -2,17 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/toekns_constants.dart';
+import 'package:flutter_application_1/screens/home_screen.dart';
 import 'package:flutter_application_1/widgets/custom_app_bar.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
+import 'package:flutter_application_1/widgets/custom_checkbox.dart';
 import 'package:flutter_application_1/widgets/custom_column.dart';
 import 'package:flutter_application_1/widgets/custom_form.dart';
+import 'package:flutter_application_1/widgets/custom_modal_bottom_sheet.dart';
+import 'package:flutter_application_1/widgets/custom_text.dart';
 import 'package:flutter_application_1/widgets/custom_text_field.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key}); // super.key 추가
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -25,6 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String errorMessage = '';
 
   final _formKey = GlobalKey<FormState>();
+
+  // 로그인 성공 후 사용자 정보를 저장할 변수 추가
+  User? _currentUser;
 
   void _login() async {
     String username = _usernameController.text;
@@ -119,30 +129,144 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email'], // 최소한의 정보만 요청
+  );
+  User? _user; // 현재 로그인된 사용자 정보
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+  Future<void> _signInWithGoogle() async {
+    try {
+      // Google 계정 선택 및 로그인
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        // 사용자가 로그인 취소
+        return;
+      }
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+      // GoogleSignInAuthentication 객체 가져오기
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+      // Firebase 자격 증명 생성
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Firebase에 로그인
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      setState(() {
+        _user = userCredential.user;
+      });
+
+      print("Signed in with Google: ${_user?.displayName}");
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } catch (e) {
+      print("Google sign-in error: $e");
+    }
   }
 
-  // 공통 입력값 검증 함수
-  String? commonValidator(String? value, String fieldName) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter a $fieldName';
-    }
-    return null;
+  // 체크박스 상태 변수들
+  bool _termsChecked = false;
+  bool _privacyChecked = false;
+  bool _marketingChecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // 화면이 마운트된 후, 즉시 BottomSheet를 자동으로 열도록 설정
+    // 프레임이 끝난 후 약간의 딜레이를 두고 실행하면 확실하게 트리거됨
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        _openBottomSheet();
+      });
+    });
+  }
+
+  // BottomSheet를 여는 함수
+  void _openBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true, // Sheet의 높이를 내용에 따라 조절할 수 있도록 설정
+      builder: (BuildContext context) {
+        // StatefulBuilder를 사용하여 BottomSheet 내부의 상태를 관리
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter modalSetState) {
+            return Container(
+              width: double.infinity,
+              // height: 340, // height를 고정하기보다 내용에 맞추는 것이 좋습니다.
+              padding: EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // 왼쪽 정렬
+                mainAxisSize: MainAxisSize.min, // Column의 높이를 내용에 맞춤
+                children: [
+                  CustomText(variant: 'title', text: '서비스 이용을 위해\n동의가 필요해요'),
+                  SizedBox(height: 24),
+                  CustomCheckbox(
+                    value: _termsChecked,
+                    onChanged: (newValue) {
+                      // modalSetState를 사용하여 BottomSheet 내부만 리빌드
+                      modalSetState(() {
+                        _termsChecked = newValue;
+                      });
+                    },
+                    label: '[필수] 서비스 이용약관',
+                  ),
+                  CustomCheckbox(
+                    value: _privacyChecked,
+                    onChanged: (newValue) {
+                      // modalSetState를 사용하여 BottomSheet 내부만 리빌드
+                      modalSetState(() {
+                        _privacyChecked = newValue;
+                      });
+                    },
+                    label: '[필수] 개인정보 처리방침',
+                  ),
+                  CustomCheckbox(
+                    value: _marketingChecked,
+                    onChanged: (newValue) {
+                      // modalSetState를 사용하여 BottomSheet 내부만 리빌드
+                      modalSetState(() {
+                        _marketingChecked = newValue;
+                      });
+                    },
+                    label: '[선택] 마케팅 정보 수신 동의',
+                  ),
+                  SizedBox(height: 24), // 버튼 위 여백 추가
+                  CustomButton(
+                    variant: 'secondary',
+                    size: 'large',
+                    isFullWidth: true,
+                    text: '동의하고 시작하기',
+                    onPressed: () {
+                      // 필수 약관 동의 여부 확인
+                      if (_termsChecked && _privacyChecked) {
+                        Navigator.pop(context); // BottomSheet 닫기
+                        // 여기에 동의 후 로그인 화면으로 이동하는 로직 등을 추가할 수 있습니다.
+                      } else {
+                        // 필수 약관에 동의하지 않았을 경우 사용자에게 알림
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('필수 약관에 모두 동의해야 합니다.'),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -155,50 +279,130 @@ class _LoginScreenState extends State<LoginScreen> {
         child: CustomForm(
           formKey: _formKey,
           children: [
-            CustomButton(
-              variant: 'secondary',
-              text: '구굴로시작하긔',
-              onPressed: signInWithGoogle,
-              isFullWidth: true,
-            ),
-            const Divider(
-                height: 20,
-                thickness: .05,
-                indent: 0,
-                endIndent: 0,
-                color: Colors.black),
-            CustomTextField(
-              controller: _usernameController,
-              labelText: 'Username',
-              hintText: 'Enter your email',
-              icon: Icons.email,
-              onChanged: (text) {
-                print('Entered text: $text');
-              },
-              validator: (value) => commonValidator(value, 'username'),
-            ),
-            // SizedBox 말고 TextFieldGroup
-            CustomTextField(
-              controller: _passwordController,
-              labelText: 'Password',
-              hintText: 'Enter your email',
-              onChanged: (text) {
-                print('Entered text: $text');
-              },
-              validator: (value) => commonValidator(value, 'password'),
-            ),
+            CustomText(variant: 'title', text: '시작해볼까요?'),
+            CustomText(
+                variant: 'label-large', text: '로그인하고 AI와 함께 상세페이지를 만들어요!'),
+            SizedBox(height: 40),
 
-            if (errorMessage.isNotEmpty)
-              Text(
-                errorMessage,
-                style: TextStyle(color: Colors.red),
+            if (_user != null)
+              Column(
+                children: [
+                  Text("Welcome, ${_user!.displayName}"),
+                  Text("Email: ${_user!.email}"),
+                  // ElevatedButton(
+                  //   onPressed: _signOut,
+                  //   child: Text("Sign Out"),
+                  // ),
+                ],
               ),
-            CustomButton(
-              variant: 'secondary',
-              text: '로그인',
-              onPressed: _login,
-              isFullWidth: true,
+
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _signInWithGoogle();
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.white), // 버튼 색상
+                  foregroundColor:
+                      MaterialStateProperty.all(Colors.black), // 텍스트 색상
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(horizontal: 50, vertical: 20)), // 패딩
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: Color(0xFFD1D1D1), width: 1),
+                    ),
+                  ),
+                  elevation: MaterialStateProperty.all(0),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.login,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 10),
+                    CustomText(variant: 'label-large', text: 'Apple로 로그인'),
+                  ],
+                ),
+              ),
             ),
+            Container(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _signInWithGoogle();
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(Colors.white), // 버튼 색상
+                  foregroundColor:
+                      MaterialStateProperty.all(Colors.black), // 텍스트 색상
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(horizontal: 50, vertical: 20)), // 패딩
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: Color(0xFFD1D1D1), width: 1),
+                    ),
+                  ),
+                  elevation: MaterialStateProperty.all(0),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.login,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 10),
+                    CustomText(variant: 'label-large', text: 'Google로 로그인'),
+                  ],
+                ),
+              ),
+            ),
+            // 주석 처리된 부분 (이메일/비밀번호 로그인)은 그대로 유지했습니다.
+            // const Divider(
+            //     height: 20,
+            //     thickness: .05,
+            //     indent: 0,
+            //     endIndent: 0,
+            //     color: Colors.black),
+            // CustomTextField(
+            //   controller: _usernameController,
+            //   labelText: 'Username',
+            //   hintText: 'Enter your email',
+            //   icon: Icons.email,
+            //   onChanged: (text) {
+            //     print('Entered text: $text');
+            //   },
+            //   validator: (value) => commonValidator(value, 'username'),
+            // ),
+            // // SizedBox 말고 TextFieldGroup
+            // CustomTextField(
+            //   controller: _passwordController,
+            //   labelText: 'Password',
+            //   hintText: 'Enter your email',
+            //   onChanged: (text) {
+            //     print('Entered text: $text');
+            //   },
+            //   validator: (value) => commonValidator(value, 'password'),
+            // ),
+
+            // if (errorMessage.isNotEmpty)
+            //   Text(
+            //     errorMessage,
+            //     style: TextStyle(color: Colors.red),
+            //   ),
+            // CustomButton(
+            //   variant: 'secondary',
+            //   text: '로그인',
+            //   onPressed: _login,
+            //   isFullWidth: true,
+            // ),
           ],
         ),
       ),

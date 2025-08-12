@@ -105,7 +105,7 @@ class MyApp extends ConsumerWidget {
         },
         // '/': (context) => LoginScreen(), // 로그인 페이지
       },
-      home: SplashScreen(),
+      home: LoginScreen(),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

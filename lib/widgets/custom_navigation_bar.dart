@@ -38,7 +38,7 @@ class CustomNavigationBar extends StatelessWidget {
       destinations: <Widget>[
         NavigationDestination(
           icon: SvgPicture.asset(
-            '/icons/template.svg',
+            'assets/icons/template.svg',
             width: 24.0,
             height: 24.0,
             color: currentPageIndex == 0 ? Colors.black : Color(0xFF4F4F4F),
@@ -47,7 +47,7 @@ class CustomNavigationBar extends StatelessWidget {
         ),
         NavigationDestination(
           icon: SvgPicture.asset(
-            '/icons/ai.svg',
+            'assets/icons/ai.svg',
             width: 24.0,
             height: 24.0,
             color: currentPageIndex == 1 ? Colors.black : Color(0xFF4F4F4F),
@@ -56,7 +56,7 @@ class CustomNavigationBar extends StatelessWidget {
         ),
         NavigationDestination(
           icon: SvgPicture.asset(
-            '/icons/library.svg',
+            'assets/icons/library.svg',
             width: 24.0,
             height: 24.0,
             color: currentPageIndex == 2 ? Colors.black : Color(0xFF4F4F4F),

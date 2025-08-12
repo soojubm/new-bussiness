@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
+import 'package:flutter_application_1/screens/faqs_screen.dart';
 import 'package:flutter_application_1/widgets/custom_avatar.dart';
 import 'package:flutter_application_1/widgets/custom_text.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -30,42 +32,45 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final isMenu = variant == AppBarVariant.menu;
 
-    return AppBar(
-      backgroundColor: colorMode == 'dark'
-          ? Colors.black
-          : Theme.of(context).appBarTheme.backgroundColor,
-      automaticallyImplyLeading: false,
-      centerTitle: isMenu,
-      leading: isMenu
-          ? IconButton(
-              icon: const Icon(Icons.menu),
-              color: colorMode == 'dark' ? Colors.white : Colors.black,
-              onPressed: () {
-                // 메뉴 아이콘을 눌렀을 때 새로운 화면을 Navigator로 띄우기
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return MenuScreen();
-                    },
-                  ),
-                );
-              },
-            )
-          : IconButton(
-              icon: const Icon(Icons.arrow_back),
-              color: colorMode == 'dark' ? Colors.white : Colors.black,
-              onPressed:
-                  onBackPressed ?? () => Navigator.of(context).maybePop(),
-            ),
-      title: Align(
-        alignment: isMenu ? Alignment.center : Alignment.centerLeft,
-        child: Text(
-          title,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+    return Padding(
+      padding: const EdgeInsets.only(left: 4.0, right: horizontalPadding),
+      child: AppBar(
+        backgroundColor: colorMode == 'dark'
+            ? Colors.black
+            : Theme.of(context).appBarTheme.backgroundColor,
+        automaticallyImplyLeading: false,
+        centerTitle: isMenu,
+        leading: isMenu
+            ? IconButton(
+                icon: const Icon(Icons.menu),
+                color: colorMode == 'dark' ? Colors.white : Colors.black,
+                onPressed: () {
+                  // 메뉴 아이콘을 눌렀을 때 새로운 화면을 Navigator로 띄우기
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return MenuScreen();
+                      },
+                    ),
+                  );
+                },
+              )
+            : IconButton(
+                icon: const Icon(Icons.arrow_back),
+                color: colorMode == 'dark' ? Colors.white : Colors.black,
+                onPressed:
+                    onBackPressed ?? () => Navigator.of(context).maybePop(),
+              ),
+        title: Align(
+          alignment: isMenu ? Alignment.center : Alignment.centerLeft,
+          child: Text(
+            title,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
         ),
+        actions: actions,
       ),
-      actions: actions,
     );
   }
 }
@@ -73,19 +78,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 // CouponItem 모델 클래스
 class CouponItem {
   final String text;
-  final String link;
+  final Widget Function(BuildContext) screenBuilder;
 
-  CouponItem({required this.text, required this.link});
+  CouponItem({required this.text, required this.screenBuilder});
 }
 
 class MenuScreen extends StatelessWidget {
   final List<CouponItem> couponItems = [
-    CouponItem(text: '고객센터', link: 'https://example.com/1'),
-    CouponItem(text: '공지사항', link: 'https://example.com/2'),
-    CouponItem(text: '자주 묻는 질문', link: 'https://example.com/3'),
-    CouponItem(text: '쉬운 가이드', link: 'https://example.com/3'),
-    CouponItem(text: '약관 및 정책', link: 'https://example.com/3'),
-    CouponItem(text: '앱 설정', link: 'https://example.com/3'),
+    CouponItem(text: '고객센터', screenBuilder: (context) => FAQsScreen()),
+    CouponItem(text: '공지사항', screenBuilder: (context) => FAQsScreen()),
+    CouponItem(text: '자주 묻는 질문', screenBuilder: (context) => FAQsScreen()),
+    CouponItem(text: '쉬운 가이드', screenBuilder: (context) => FAQsScreen()),
+    CouponItem(text: '약관 및 정책', screenBuilder: (context) => FAQsScreen()),
+    CouponItem(text: '앱 설정', screenBuilder: (context) => FAQsScreen()),
   ];
 
   // URL을 열기 위한 함수
@@ -222,8 +227,13 @@ class MenuScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    // 클릭 시 해당 링크로 이동
-                    // _launchURL(couponItems[index].link);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            couponItems[index].screenBuilder(context),
+                      ),
+                    );
                   },
                   child: Container(
                     child: CustomText(

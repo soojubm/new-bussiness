@@ -118,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontSize: 22,
               ),
             ),
-            Image.asset('images/food.png'),
+            Image.asset('assets/images/food.png'),
             CustomButton(
                 text: '로그아웃',
                 onPressed: () async {

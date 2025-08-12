@@ -12,6 +12,8 @@ const gray200 = Color(0xffC9CDD2);
 const gray100 = Color(0xffE8EBED);
 const background = Color(0xffEDF3FB);
 
+const pointEmphasis = Color(0xFFED5F5A);
+
 const Color primaryColor = Color(0xFF000000);
 
 ThemeData lightTheme = ThemeData(
@@ -27,6 +29,9 @@ ThemeData lightTheme = ThemeData(
     // onBackground: Colors.black,
     onSurface: Colors.black,
     onError: Colors.white,
+
+    // 컬러 확장해야 함.
+    // pointEmphasis: Color(0xFFED5F5A), // 강조 색상
   ),
   textTheme: TextTheme(
       // headline1: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

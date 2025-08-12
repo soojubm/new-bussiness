@@ -5,7 +5,8 @@ const double borderRadius = 100.0;
 
 class CustomButton extends StatelessWidget {
   final String? size;
-  final String text;
+  final String? text; // for 이미지로 대체하는 텍스트
+  final Widget? image;
   final VoidCallback onPressed;
   final String variant;
   final String style;
@@ -17,12 +18,17 @@ class CustomButton extends StatelessWidget {
     this.size = 'medium',
     this.variant = 'filled',
     this.style = 'primary',
-    required this.text,
+    this.text,
+    this.image,
     required this.onPressed,
     this.isFullWidth = false,
     this.leadingIcon,
     this.disabled = false,
-  });
+  })  : assert(
+          (text != null && image == null) || (text == null && image != null),
+          'text 또는 image 중 하나만 제공해야 합니다.',
+        ),
+        assert(onPressed != null, 'onPressed는 null일 수 없습니다');
 
   double _getButtonHeight() {
     switch (size) {
@@ -67,6 +73,19 @@ class CustomButton extends StatelessWidget {
     }
   }
 
+  double _getFontSize() {
+    switch (size) {
+      case 'small':
+        return 12.0;
+      case 'medium':
+        return 14.0;
+      case 'large':
+        return 18.0;
+      default:
+        return 14.0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Opacity(
@@ -83,14 +102,17 @@ class CustomButton extends StatelessWidget {
                 leadingIcon!,
                 SizedBox(width: 8),
               ],
-              Text(
-                text,
-                style: TextStyle(
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.w600,
-                  color: leadingIcon != null ? Colors.black : Colors.white,
+              if (image != null)
+                image!
+              else if (text != null)
+                Text(
+                  text!,
+                  style: TextStyle(
+                    fontSize: _getFontSize(), // ← 여기에 적용
+                    fontWeight: FontWeight.w600,
+                    color: leadingIcon != null ? Colors.black : Colors.white,
+                  ),
                 ),
-              ),
             ],
           ),
           constraints: BoxConstraints(

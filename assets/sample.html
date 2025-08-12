@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flutter WebView Input</title>
+    <style>
+      .selected {
+        background-color: #4caf50;
+        color: white;
+      }
+    </style>
+    <script type="text/javascript">
+      function sendInputValue(value) {
+        JavaBridge.postMessage(value);
+      }
+
+      function setInputValueFromFlutter(value) {
+        document.getElementById("myInput").value = value;
+      }
+
+      function getInputValue() {
+        return document.getElementById("myInput").value;
+      }
+
+      function toggleButton(buttonId) {
+        const button = document.getElementById(buttonId);
+        button.classList.toggle("selected");
+        const isSelected = button.classList.contains("selected");
+        JavaBridge.postMessage(
+          JSON.stringify({
+            action: "navigate",
+            buttonId: buttonId,
+            selected: isSelected,
+          })
+        );
+      }
+
+      function setButtonState(buttonId, isSelected) {
+        const button = document.getElementById(buttonId);
+        if (isSelected) {
+          button.classList.add("selected");
+        } else {
+          button.classList.remove("selected");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h2>Flutter WebView Button Example</h2>
+    <input id="myInput" type="text" oninput="sendInputValue(this.value)" />
+    <br /><br />
+    <button id="btn1" onclick="toggleButton('btn1')">Button 1</button>
+    <button id="btn2" onclick="toggleButton('btn2')">Button 2</button>
+  </body>
+</html>

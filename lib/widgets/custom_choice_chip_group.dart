@@ -5,13 +5,13 @@ class CustomChoiceChipGroup extends StatelessWidget {
   final int selectedIndex;
   final List<String> chipLabels;
   final ValueChanged<int> onSelectionChanged;
-  final List<String>? chipSvgPaths;
+  final List<String>? chipSvgPaths; // SVG 경로는 선택 사항
 
   CustomChoiceChipGroup({
     required this.selectedIndex,
     required this.chipLabels,
     required this.onSelectionChanged,
-    this.chipSvgPaths,
+    this.chipSvgPaths, // 선택 사항으로 변경
   });
 
   @override
@@ -21,32 +21,40 @@ class CustomChoiceChipGroup extends StatelessWidget {
       children: chipLabels
           .asMap()
           .map((index, label) {
-            final svgPath =
-                (chipSvgPaths != null && index < chipSvgPaths!.length)
-                    ? chipSvgPaths![index]
-                    : null;
+            final svgPath = chipSvgPaths != null && index < chipSvgPaths!.length
+                ? chipSvgPaths![index]
+                : null; // svgPath가 null일 수도 있음
 
             return MapEntry(
               index,
               ChoiceChip(
-                showCheckmark: false,
+                showCheckmark: false, // 기본 체크 표시 제거
                 label: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (svgPath != null) ...[
+                    // 선택된 경우에만 체크 아이콘을 표시
+                    if (selectedIndex == index)
+                      Icon(
+                        Icons.check,
+                        size: 18,
+                        color: Colors.white, // 체크 아이콘 색상
+                      ),
+                    // SVG 이미지가 있는 경우
+                    if (svgPath != null && selectedIndex != index) ...[
                       SvgPicture.asset(
                         svgPath,
                         width: 18,
                         height: 18,
                         colorFilter: ColorFilter.mode(
-                          selectedIndex == index ? Colors.white : Colors.black,
+                          Colors.black,
                           BlendMode.srcIn,
                         ),
                         placeholderBuilder: (context) =>
                             Icon(Icons.image_not_supported, size: 18),
                       ),
-                      SizedBox(width: 4),
                     ],
+                    SizedBox(width: 4),
+                    // 텍스트 표시
                     Text(label),
                   ],
                 ),

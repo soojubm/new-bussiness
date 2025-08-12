@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/screens/ai_product_image_edit_screen.dart';
 import 'package:flutter_application_1/screens/ai_screen.dart';
 import 'package:flutter_application_1/widgets/custom_button.dart';
@@ -80,6 +81,11 @@ class _AIProductDetailScreenState extends State<AiProductDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GestureDetector(
+                      child: ImageWithFallback(
+                        imageUrl: 'assets/images/image_fallback.svg',
+                        fallbackImageUrl: 'assets/images/image_fallback.svg',
+                        loadingImageAsset: 'assets/images/image_fallback.svg',
+                      ),
                       onTap: () {
                         showModalBottomSheet<void>(
                           context: context,
@@ -87,23 +93,78 @@ class _AIProductDetailScreenState extends State<AiProductDetailScreen> {
                           builder: (BuildContext context) {
                             return CustomModalBottomSheet(
                               title: '전체 레이어 변경',
-                              child: Text('여기에 다른 내용이 들어갈 수 있습니다'),
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                itemCount: 4,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 8.0),
+                                    leading: SizedBox(
+                                      width: 64,
+                                      height: 64,
+                                      child: ImageWithFallback(
+                                        imageUrl:
+                                            'assets/images/image_fallback.svg',
+                                        fallbackImageUrl:
+                                            'assets/images/image_fallback.svg',
+                                        loadingImageAsset:
+                                            'assets/images/image_fallback.svg',
+                                      ),
+                                    ),
+                                    title: Text('이미지 ${index + 1}'),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      spacing: 8.0,
+                                      children: [
+                                        CustomButton(
+                                          variant: 'secondary',
+                                          size: 'small',
+                                          text: '변경',
+                                          onPressed: () {},
+                                        ),
+                                        CustomButton(
+                                          variant: 'secondary',
+                                          size: 'small',
+                                          text: 'AI 생성',
+                                          onPressed: () {},
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                                separatorBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8.0), // 위아래 8px 마진
+                                  child: Divider(
+                                    color: Colors.grey[300],
+                                    thickness: 1,
+                                    height: 1,
+                                  ),
+                                ),
+                              ),
                             );
                           },
                         );
                       },
-                      child: ImageWithFallback(
-                        imageUrl: 'assets/images/image_fallback.svg',
-                        fallbackImageUrl: 'assets/images/image_fallback.svg',
-                        loadingImageAsset: 'assets/images/image_fallback.svg',
-                      ),
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => AiProductImageEditScreen()),
+                        // );
+
+                        Navigator.of(context, rootNavigator: true).push(
                           MaterialPageRoute(
-                              builder: (context) => AiProductImageEditScreen()),
+                            builder: (context) => AiProductImageEditScreen(),
+                            // fullscreenDialog 단점
+                            fullscreenDialog: true,
+                          ),
                         );
                       },
                       child: ImageWithFallback(

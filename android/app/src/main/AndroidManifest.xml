@@ -1,5 +1,12 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.insplanet.myapp">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+            <!--
+            (HTTP 사용하는 경우만 필요)
+        -->
     <application
+        android:usesCleartextTraffic="true"
         android:label="flutter_application_1"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

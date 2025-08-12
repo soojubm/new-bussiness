@@ -14,6 +14,58 @@
       },
       "oauth_client": [
         {
+          "client_id": "349858250623-2non23ngc111o15ju0iq16un3ihofhdj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_application_1",
+            "certificate_hash": "0b1ef6288e4b5bb725092385286b49ca2c6872a2"
+          }
+        },
+        {
+          "client_id": "349858250623-r0ioc1admkojd1t23v9uk36n0c9apnai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjZ8h9VtfL7IcUIM6LL0U924NU-eoIiz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "349858250623-r0ioc1admkojd1t23v9uk36n0c9apnai.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "349858250623-ta57ucb92u6nklarvua4c9ho89rqrb3a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplication1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349858250623:android:9774ce18499a977078e44a",
+        "android_client_info": {
+          "package_name": "com.insplanet.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "349858250623-utmakf0hs08nbl5v87opt5em092fhg4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.insplanet.myapp",
+            "certificate_hash": "0b1ef6288e4b5bb725092385286b49ca2c6872a2"
+          }
+        },
+        {
           "client_id": "349858250623-r0ioc1admkojd1t23v9uk36n0c9apnai.apps.googleusercontent.com",
           "client_type": 3
         }

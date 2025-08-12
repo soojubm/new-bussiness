@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/main.dart';
 import 'package:flutter_application_1/screens/ai_screen.dart';
 import 'package:flutter_application_1/widgets/action_list.dart';
 import 'package:flutter_application_1/widgets/chat_bubble.dart';
@@ -9,8 +10,27 @@ import 'package:flutter_application_1/widgets/typing_text.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/custom_app_bar.dart'; // 경로는 프로젝트에 맞게 조정
 
-class AiTextScreen extends StatelessWidget {
-  const AiTextScreen({super.key});
+enum ButtonState {
+  nullState, // 초기 상태 또는 비활성화 상태
+  productDetail, // 상품 상세 페이지 상태
+  instagram, // 인스타그램 상태
+  shortform, // 틱톡/쇼츠 상태
+}
+
+class AiTextScreen extends StatefulWidget {
+  @override
+  _AiTextScreenState createState() => _AiTextScreenState();
+}
+
+class _AiTextScreenState extends State<AiTextScreen> {
+  // const AiTextScreen({super.key});
+  ButtonState selectedButtonState = ButtonState.nullState;
+
+  void _updateButtonState(ButtonState newState) {
+    setState(() {
+      selectedButtonState = newState;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +41,8 @@ class AiTextScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(
+              vertical: 16.0, horizontal: horizontalPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -46,26 +67,36 @@ class AiTextScreen extends StatelessWidget {
                       variant: 'secondary',
                       size: 'medium',
                       text: '상품 상세페이지',
-                      onPressed: () => {},
+                      onPressed: () {
+                        _updateButtonState(ButtonState.productDetail);
+                      },
+                      disabled: selectedButtonState != ButtonState.nullState,
                     ),
                     CustomButton(
                       variant: 'secondary',
                       size: 'medium',
                       text: '인스타그램',
+                      onPressed: () {
+                        _updateButtonState(ButtonState.instagram);
+                      },
                       disabled: true,
-                      onPressed: () => {},
                     ),
                     CustomButton(
                       variant: 'secondary',
                       size: 'medium',
                       text: '틱톡/쇼츠',
+                      onPressed: () {
+                        _updateButtonState(ButtonState.shortform);
+                      },
                       disabled: true,
-                      onPressed: () => {},
                     ),
                   ],
                 ),
               ),
               SizedBox(height: 24),
+
+              // 상태에 맞는 위젯을 출력하는 StatusWidget
+              StatusWidget(selectedButtonState: selectedButtonState), // 여기서 전달
 
               ActionList(
                 children: [
@@ -146,11 +177,11 @@ class AiTextScreen extends StatelessWidget {
                       height: 40.0,
                       decoration: BoxDecoration(
                         color: Color(0xFF373C42),
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderRadius: BorderRadius.circular(40.0),
                       ),
                       child: IconButton(
                         icon: SvgPicture.asset(
-                          '/icons/input_submit.svg',
+                          'assets/icons/input_submit.svg',
                           width: 20,
                           height: 20,
                         ),
@@ -172,5 +203,54 @@ class AiTextScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
+  }
+}
+
+class StatusWidget extends StatelessWidget {
+  final ButtonState selectedButtonState;
+
+  StatusWidget({required this.selectedButtonState}); // 상태를 전달받음
+
+  @override
+  Widget build(BuildContext context) {
+    switch (selectedButtonState) {
+      case ButtonState.productDetail:
+        return Column(
+          children: [
+            TypingSequence(
+              firstWidget: TypingText(variant: 'h4', text: '상품에 대한 내용을 알려주세요.'),
+              secondWidget: TypingText(
+                variant: 'label1',
+                text: '상품의 구체적인 특징이나 상세한 정보를 알려주시면, 더 완성도 있게 작성할 수 있어요.',
+                color: Color(0xFF5D5D5D),
+              ),
+              thirdWidget: Column(
+                spacing: 8.0,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [],
+              ),
+            ),
+          ],
+        );
+      case ButtonState.instagram:
+        return Column(
+          children: [
+            Text("인스타그램이 선택되었습니다."),
+            // Instagram 관련 UI 추가
+          ],
+        );
+      case ButtonState.shortform:
+        return Column(
+          children: [
+            Text("틱톡/쇼츠가 선택되었습니다."),
+            // TikTok/ShortForm 관련 UI 추가
+          ],
+        );
+      case ButtonState.nullState:
+      default:
+        return Center(
+          child: Text("아직 선택되지 않았습니다."),
+        );
+    }
   }
 }
